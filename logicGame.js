@@ -151,7 +151,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
 
 // event listener
 window.addEventListener('resize', function () {
@@ -232,8 +232,8 @@ function starForge() {
 
 function asteroidForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    var i = -5000;
-    for (var z = -10000; z < -100; z += (60 / lvl)) {
+    var i = -10000;
+    for (var z = -10000; z < -100; z += (10 / lvl)) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
             var geometry = new THREE.SphereBufferGeometry(28, Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
@@ -241,15 +241,15 @@ function asteroidForge() {
             var asteroid = new THREE.Mesh(geometry, material);
 
             // This time we give the sphere random x and y positions between -500 and 500
-            asteroid.position.x = Math.random() * 300 - 100;
-            asteroid.position.y = Math.random() * 300 - 100;
+            asteroid.position.x = Math.random() * 1000 - 500;
+            asteroid.position.y = Math.random() * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
             asteroid.position.z = i;
             //add the sphere to the scene
             scene.add(asteroid);
             //finally push it to the stars array
             asteroids.push(asteroid);
-            i += 30;
+            i += 10;
         });
     }
 }

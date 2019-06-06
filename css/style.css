@@ -112,7 +112,6 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
 }
 
 #ship2 {
@@ -122,7 +121,6 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
 }
 
 #ship3 {
@@ -132,7 +130,6 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
 }
 
 #easy {
@@ -142,7 +139,7 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
+
 }
 
 #medium {
@@ -152,7 +149,7 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
+
 }
 
 #hard {
@@ -162,7 +159,7 @@ body {
     transform: translate(-50%, 0);
     text-align: center;
     width: 19%;
-    z-index: 10000;
+
 }
 
 
@@ -173,7 +170,7 @@ body {
     color: black;
     background-color: #ECC760;
     position: absolute;
-    bottom: 5%;
+    bottom: 3%;
     right: 2%;
     width: 60px;
     height: 60px;
@@ -181,5 +178,23 @@ body {
     padding: 6px 0;
     font-size: 33px;
     border-radius: 35px;
-    opacity: 10%;
+}
+
+.btn-circle.closeButton {
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+}
+
+#instructions{
+    position: absolute;
+    bottom: 1.8%;
+    right: 1.5%;
+    background-color: white;
+    width: 25%;
+    height: 70%;
+    border-radius: 35px;
+    border-color: #ECC760 ;
+    display: none;
+    z-index: 10000;
 }
