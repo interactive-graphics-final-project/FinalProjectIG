@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+    <title>The war of the meteorites</title>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body id="body">
+
+<script src="./build/three.js"></script>
+<script src="./js/controls/OrbitControls.js"></script>
+<script src="./js/loaders/deprecated/LegacyJSONLoader.js"></script>
+<script src="./js/WebGL.js"></script>
+<script src="./logicGame.js"></script>
+
+<div id="health">
+    Health: 100 / 100
+</div>
+<div id="score">
+    Score: 0
+</div>
+
+<div id="gameOver">
+    <div class="title">
+        GAME oVER
+    </div>
+    <div class="returnMenu">
+        <h1 class="clickable" onclick="returnMenu()" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+    </div>
+</div>
+
+<div id="secondMenu">
+    <div class="title">
+        PAUSE
+    </div>
+    <div class="returnMenu">
+        <h1 class="clickable" onclick="returnMenu()" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+    </div>
+    <div class="commands">
+        <b>Space:</b> Shoot <br>
+        <b>Mouse Position:</b> Movement Spaceship <br>
+        <b> T: </b> Turbo <br>
+        <b>Esc:</b> Pause
+    </div>
+</div>
+<div id="mainMenu">
+    <div id="title">
+        the war of the meteorites
+    </div>
+    <!--    <div id="ship1">
+            <h4 class="ship" id="1" onclick="switchShip(1)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">x - wing</h4>
+        </div>-->
+    <div id="easy">
+        <h4 class="lvl" id="lvl1" onclick="switchLvl(1)" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Easy</h4>
+    </div>
+    <div id="medium">
+        <h4 class="lvl" id="lvl2" onclick="switchLvl(2)" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">Medium</h4>
+    </div>
+    <div id="hard">
+        <h4 class="lvl" id="lvl3" onclick="switchLvl(3)" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">Hard</h4>
+    </div>
+
+
+    <div id="ship1">
+        <h4 class="ship" id="0" onclick="switchShip(0)" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Tie - Fighter</h4>
+    </div>
+    <div id="ship3">
+        <h4 class="ship" id="2" onclick="switchShip(2)" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">arc - 170pbr (beta)</h4>
+    </div>
+    <div id="start">
+        <h1 class="clickable" onclick="startGame()" onmouseout="this.style.cursor='default';"
+            onmouseover="this.style.cursor='pointer';">Play game</h1>
+    </div>
+    <div class="commands">
+        <b>Space:</b> Shoot <br>
+        <b>Mouse Position:</b> Movement Spaceship <br>
+        <b> T: </b> Turbo <br>
+        <b>Esc:</b> Pause
+    </div>
+</div>
+
+<button class="btn btn-danger btn-circle" type="button">?</button>
+</body>
+</html>
