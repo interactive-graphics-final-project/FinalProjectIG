@@ -204,22 +204,29 @@ controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 function starForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    for (var z = -1000; z < 1000; z += 20) {
+    for (var z = -2000; z < -1000; z += 1) {
         // Make a sphere (exactly the same as before).
-        var geometry = new THREE.SphereGeometry(0.5, 32, 32);
-        var material = new THREE.MeshPhongMaterial({color: 0xffffff, reflectivity: 0.1});
+        var geometry = new THREE.SphereGeometry(0.9, 32, 32);
+        var material = new THREE.MeshBasicMaterial({color: 0xffffff, reflectivity: 0.1});
         var sphere = new THREE.Mesh(geometry, material);
         // This time we give the sphere random x and y positions between -500 and 500
-        sphere.position.x = Math.random() * 1000 - 500;
-        sphere.position.y = Math.random() * 1000 - 500;
+        sphere.position.x = Math.random() * 3000 - 1500;
+        sphere.position.y = Math.random() * 3000 - 1500;
         // Then set the z position to where it is in the loop (distance of camera)
-        sphere.position.z = z;
+        sphere.position.z = Math.random() * 3000 - 1500;
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
+
+        if (-50 < sphere.position.z < 50) {
+
+            sphere.position.x = sphere.position.x * 3;
+            sphere.position.y = sphere.position.y * 3;
+        }
         //add the sphere to the scene
         scene.add(sphere);
         //finally push it to the stars array
         stars.push(sphere);
+
     }
 }
 
@@ -347,14 +354,14 @@ function update() {
             }
 
             // loop through each star
-            for (var iSta = 0; iSta < stars.length; iSta++) {
-                stars[iSta].position.z += iSta / 10;
-
-                if (turbo === true)
-                    stars[iSta].position.z += iSta / 10;
-                // if the particle is too close move it to the back
-                if (stars[iSta].position.z > 1000) stars[iSta].position.z = -1000;
-            }
+            // for (var iSta = 0; iSta < stars.length; iSta++) {
+            //     stars[iSta].position.z += iSta / 10;
+            //
+            //     if (turbo === true)
+            //         stars[iSta].position.z += iSta / 10;
+            //     // if the particle is too close move it to the back
+            //     if (stars[iSta].position.z > 1000) stars[iSta].position.z = -1000;
+            // }
 
             // loop through each asteroids
             for (var iAst = 0; iAst < asteroids.length; iAst++) {
