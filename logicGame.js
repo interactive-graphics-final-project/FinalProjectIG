@@ -57,7 +57,7 @@ function startGame() {
     controls.reset();
     controls.enabled = false;
     
-    sound();
+    sound('sounds/Music  Asteroid chase.mp3', true);
     
     // reset the score and the health
     document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
@@ -461,11 +461,11 @@ function hideHtml(id, cursor) {
         document.body.style.cursor = "none";
 }
 
-function sound(){
+function sound(i, b){
     var listener = new THREE.AudioListener();
     var audio = new THREE.Audio( listener );
-    var mediaElement = new Audio( 'sounds/Music  Asteroid chase.mp3' );
-    mediaElement.loop = true;
+    var mediaElement = new Audio(i);
+    mediaElement.loop = b;
     mediaElement.play();
 }
 
