@@ -48,7 +48,7 @@ function startGame() {
     start = true;
     pause = false;
     gameOver = false;
-
+    
     // init variable
     health = 100;
     score = 0;
@@ -56,7 +56,9 @@ function startGame() {
     // disable auto rotation and orbit control
     controls.reset();
     controls.enabled = false;
-
+    
+    sound();
+    
     // reset the score and the health
     document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
     document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
@@ -445,7 +447,6 @@ function update() {
             controls.update();
         }
     }
-
 }
 
 function showHtml(id, cursor) {
@@ -458,6 +459,14 @@ function hideHtml(id, cursor) {
     document.getElementById(id).style.display = "none";
     if (cursor)
         document.body.style.cursor = "none";
+}
+
+function sound(){
+    var listener = new THREE.AudioListener();
+    var audio = new THREE.Audio( listener );
+    var mediaElement = new Audio( 'sounds/Music  Asteroid chase.mp3' );
+    mediaElement.loop = true;
+    mediaElement.play();
 }
 
 // draw Scene
