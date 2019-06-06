@@ -40,12 +40,7 @@
         <h1 class="clickable" onclick="returnMenu()" onmouseout="this.style.cursor='default';"
             onmouseover="this.style.cursor='pointer';">Main Menu</h1>
     </div>
-    <div class="commands">
-        <b>Space:</b> Shoot <br>
-        <b>Mouse Position:</b> Movement Spaceship <br>
-        <b> T: </b> Turbo <br>
-        <b>Esc:</b> Pause
-    </div>
+
 </div>
 <div id="mainMenu">
     <div id="title">
@@ -81,25 +76,26 @@
         <h1 class="clickable" onclick="startGame()" onmouseout="this.style.cursor='default';"
             onmouseover="this.style.cursor='pointer';">Play game</h1>
     </div>
-    <div class="commands">
-        <b>Space:</b> Shoot <br>
-        <b>Mouse Position:</b> Movement Spaceship <br>
-        <b> T: </b> Turbo <br>
-        <b>Esc:</b> Pause
-    </div>\
+
 </div>
 <!-- Help Button -->
 <button type="button" class="btn btn-danger btn-circle" onclick="showHtml('instructions', false)">?</button>
 
 <div id="instructions">
-    <div style="padding: 40px">
+    <div style="padding: 30px">
         <h1 class="text-center">instructions</h1>
-    bla <br>
-    bla <br>
-    bla <br>
-    bla <br>
+        <h3 class="text-center"><u style="color: red;">on gitHub pages this game work only with firefox</u></h3>
+        <h4>Commands</h4>
+            <ul style="font-family: Roboto; font-size: 28px;">
+                <li><b>Left Click</b>: Shoot</li>
+                <li><b>Mouse Position</b>: movement spaceship</li>
+                <li><b>T</b>: turbo</li>
+                <li><b>Esc</b>: pause</li>
+            </ul>
+        <h4>how play</h4>
     </div>
-    <button type="button" class="btn btn-danger btn-circle closeButton" onclick="hideHtml('instructions', false)">?</button>
+    <button type="button" class="btn btn-danger btn-circle closeButton" onclick="hideHtml('instructions', false)">?
+    </button>
 </div>
 
 </body>
