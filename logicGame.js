@@ -204,7 +204,7 @@ controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 function starForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    for (var z = -2000; z < -1000; z += 1) {
+    for (var z = 0; z < 1000; z += 1) {
         // Make a sphere (exactly the same as before).
         var geometry = new THREE.SphereGeometry(0.9, 32, 32);
         var material = new THREE.MeshBasicMaterial({color: 0xffffff, reflectivity: 0.1});
@@ -217,7 +217,7 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
 
-        if (-50 < sphere.position.z < 50) {
+        if (-80 < sphere.position.z < 80) {
 
             sphere.position.x = sphere.position.x * 3;
             sphere.position.y = sphere.position.y * 3;
