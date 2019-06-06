@@ -27,7 +27,7 @@ var mouseX = 0, mouseY = 0;
 // stars array
 var stars = [];
 // asteroid array
-var asteroids = [];
+var asteroids = [], radiusAsteroids = 28;
 // Bullets array
 var bullets = [];
 
@@ -151,6 +151,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+//camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
 
 // event listener
@@ -217,11 +218,11 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
         // move the stars too close to the camera
-        if (-50 < sphere.position.z < 0) {
-            sphere.position.x = sphere.position.x -= 50;
+        if (sphere.position.z < 0 && sphere.position.z > -50) {
+            sphere.position.x = sphere.position.x -= 100;
         }
-        if (0 <= sphere.position.z < 50 ) {
-            sphere.position.x = sphere.position.x += 50;
+        if (sphere.position.z >= 0 && sphere.position.z < 50) {
+            sphere.position.x = sphere.position.x += 100;
         }
         //add the sphere to the scene
         scene.add(sphere);
@@ -233,11 +234,11 @@ function starForge() {
 
 function asteroidForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    var i = -15000;
+    var i = -11000;
     for (var z = -10000; z < -100; z += (10 / lvl)) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
-            var geometry = new THREE.SphereBufferGeometry(28, Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
+            var geometry = new THREE.SphereBufferGeometry( radiusAsteroids , Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
             var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.1});
             var asteroid = new THREE.Mesh(geometry, material);
 
@@ -255,8 +256,9 @@ function asteroidForge() {
     }
 }
 
-starForge();
-asteroidForge();
+// non cancellare
+//starForge();
+//asteroidForge();
 
 //model textureLoader
 function loadModel(name, typeSShip) {
@@ -295,7 +297,7 @@ loadModel("star-wars-vader-tie-fighter", typeSpaceShip);
 
 // planet creation
 textureLoader.load('./models/texture/sun.jpg', function (texture) {
-    var geometry = new THREE.SphereBufferGeometry(280, 32, 32);
+    var geometry = new THREE.SphereBufferGeometry(300, 32, 32);
     var material = new THREE.MeshBasicMaterial({map: texture});
     var sphere = new THREE.Mesh(geometry, material);
 
@@ -354,19 +356,9 @@ function update() {
                 }
             }
 
-            // loop through each star
-            // for (var iSta = 0; iSta < stars.length; iSta++) {
-            //     stars[iSta].position.z += iSta / 10;
-            //
-            //     if (turbo === true)
-            //         stars[iSta].position.z += iSta / 10;
-            //     // if the particle is too close move it to the back
-            //     if (stars[iSta].position.z > 1000) stars[iSta].position.z = -1000;
-            // }
-
             // loop through each asteroids
             for (var iAst = 0; iAst < asteroids.length; iAst++) {
-                asteroids[iAst].position.z += lvl * 10;
+                asteroids[iAst].position.z += lvl * 18;
                 asteroids[iAst].rotation.x += iAst / 5100;
                 asteroids[iAst].rotation.z += iAst / 5500;
                 if (turbo === true)
@@ -375,7 +367,7 @@ function update() {
                 if (asteroids[iAst].position.z > 1000) asteroids[iAst].position.z = -10000;
 
                 if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + 30)) {
-                    health -= 10;
+                    health -= 0.5 * lvl;
                     if (health >= 0)
                         document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
                 }
@@ -400,7 +392,7 @@ function update() {
 
                 for (iAst = 0; iAst < asteroids.length; iAst++) {
                     // computation of the Euclidian distance for the bullet detection
-                    if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + 30)) {
+                    if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids+2)) {
                         //update score
                         score += 0.1;
                         document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
@@ -408,7 +400,7 @@ function update() {
                         // target hit - remove the bullet
                         scene.remove(bullets[iBull]);
                         // place the asteroids in the init position
-                        asteroids[iAst].position.z = -8000;
+                        asteroids[iAst].position.z = -11000;
                         bullets[iBull].alive = false;
                     }
                 }
