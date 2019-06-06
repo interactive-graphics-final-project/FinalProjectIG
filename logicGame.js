@@ -206,7 +206,7 @@ function starForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
     for (var z = 0; z < 1000; z += 1) {
         // Make a sphere (exactly the same as before).
-        var geometry = new THREE.SphereGeometry(0.9, 32, 32);
+        var geometry = new THREE.SphereGeometry(0.5, 32, 32);
         var material = new THREE.MeshBasicMaterial({color: 0xffffff, reflectivity: 0.1});
         var sphere = new THREE.Mesh(geometry, material);
         // This time we give the sphere random x and y positions between -500 and 500
@@ -216,11 +216,12 @@ function starForge() {
         sphere.position.z = Math.random() * 3000 - 1500;
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
-
-        if (-80 < sphere.position.z < 80) {
-
-            sphere.position.x = sphere.position.x * 3;
-            sphere.position.y = sphere.position.y * 3;
+        // move the stars too close to the camera
+        if (-50 < sphere.position.z < 0) {
+            sphere.position.x = sphere.position.x -= 50;
+        }
+        if (0 <= sphere.position.z < 50 ) {
+            sphere.position.x = sphere.position.x += 50;
         }
         //add the sphere to the scene
         scene.add(sphere);
@@ -232,7 +233,7 @@ function starForge() {
 
 function asteroidForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    var i = -10000;
+    var i = -15000;
     for (var z = -10000; z < -100; z += (10 / lvl)) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
@@ -249,7 +250,7 @@ function asteroidForge() {
             scene.add(asteroid);
             //finally push it to the stars array
             asteroids.push(asteroid);
-            i += 10;
+            i += 12;
         });
     }
 }
@@ -371,7 +372,7 @@ function update() {
                 if (turbo === true)
                     asteroids[iAst].position.z += 10;
                 // if the particle is too close move it to the back
-                if (asteroids[iAst].position.z > 1000) asteroids[iAst].position.z = -5000;
+                if (asteroids[iAst].position.z > 1000) asteroids[iAst].position.z = -10000;
 
                 if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + 30)) {
                     health -= 10;
