@@ -18,6 +18,11 @@ if (WEBGL.isWebGLAvailable() === false) {
 })();
 //============================================================================
 
+
+// loader
+// create an AudioListener and add it to the camera
+var listener = new THREE.AudioListener();
+
 var shooting = false;
 var camera, controls, scene, renderer;
 var width = window.innerWidth;
@@ -30,6 +35,8 @@ var stars = [];
 var asteroids = [], radiusAsteroids = 28;
 // Bullets array
 var bullets = [];
+// sounds array
+var sounds = [];
 
 //flag bullet swapping dx and sx
 var sx = true;
@@ -48,7 +55,10 @@ function startGame() {
     start = true;
     pause = false;
     gameOver = false;
-    
+
+    //playSound
+    playSound("AsteroidChase", true, false);
+
     // init variable
     health = 100;
     score = 0;
@@ -56,9 +66,7 @@ function startGame() {
     // disable auto rotation and orbit control
     controls.reset();
     controls.enabled = false;
-    
-    sound('sounds/Music  Asteroid chase.mp3', true);
-    
+
     // reset the score and the health
     document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
     document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
@@ -74,9 +82,11 @@ function startGame() {
     switch (typeSpaceShip) {
         case 0:
             camera.position.z = 5;
+            playSound("TIE-fighterFly", true, true);
             break;
         case 2:
             camera.position.z = 15;
+            playSound("ARCFly", true, true);
             break;
     }
 }
@@ -155,7 +165,6 @@ document.body.appendChild(renderer.domElement);
 
 //camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
-
 // event listener
 window.addEventListener('resize', function () {
     renderer.setSize(width, height);
@@ -172,10 +181,17 @@ document.addEventListener("keydown", function (event) {
     if (keyCode === 27) {
         if (start === true) {
             pause = !pause;
-            if (pause === true)
+            if (pause === true) {
                 showHtml("secondMenu", true);
-            else
+                for (var i = 0; i < sounds.length; i++) {
+                    sounds[i].pause();
+                }
+            } else {
                 hideHtml("secondMenu", true);
+                for (var i = 0; i < sounds.length; i++) {
+                    sounds[i].play();
+                }
+            }
 
         }
     }
@@ -193,6 +209,16 @@ document.addEventListener('mousemove', function (e) {
 }, false);
 document.addEventListener('click', function (e) {
     shooting = true;
+    //playSound
+    switch (typeSpaceShip) {
+        case 0:
+            playSound("TIE-fighterFire", false, true);
+            break;
+        case 2:
+            playSound("ARCFire", false, true);
+            break;
+    }
+
 }, false);
 //prevent text selection with double click
 document.addEventListener('mousedown', function (event) {
@@ -240,7 +266,7 @@ function asteroidForge() {
     for (var z = -10000; z < -100; z += (10 / lvl)) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
-            var geometry = new THREE.SphereBufferGeometry( radiusAsteroids , Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
+            var geometry = new THREE.SphereBufferGeometry(radiusAsteroids, Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
             var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.1});
             var asteroid = new THREE.Mesh(geometry, material);
 
@@ -394,7 +420,7 @@ function update() {
 
                 for (iAst = 0; iAst < asteroids.length; iAst++) {
                     // computation of the Euclidian distance for the bullet detection
-                    if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids+2)) {
+                    if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
                         //update score
                         score += 0.1;
                         document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
@@ -461,13 +487,29 @@ function hideHtml(id, cursor) {
         document.body.style.cursor = "none";
 }
 
-function sound(i, b){
+function playSound(name, loop, positional) {
+// create an AudioListener and add it to the camera
     var listener = new THREE.AudioListener();
-    var audio = new THREE.Audio( listener );
-    var mediaElement = new Audio(i);
-    mediaElement.loop = b;
-    mediaElement.play();
+    camera.add(listener);
+
+// create the PositionalAudio object (passing in the listener)
+    var sound = new THREE.PositionalAudio(listener);
+
+// load a sound and set it as the PositionalAudio object's buffer
+    var audioLoader = new THREE.AudioLoader();
+    audioLoader.load('sounds/' + name + '.mp3', function (buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(loop);
+        sound.setRefDistance(20);
+        sound.play();
+    });
+    if (positional)
+        spaceShip.add(sound);
+    else
+        scene.add(sound);
+    sounds.push(sound);
 }
+
 
 // draw Scene
 function render() {
@@ -476,9 +518,11 @@ function render() {
 
 // run game loop (update, render, repeat)
 function GameLoop() {
+
     requestAnimationFrame(GameLoop);
     update();
     render();
+
 }
 
 // creation of the stars
