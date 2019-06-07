@@ -288,8 +288,8 @@ function asteroidForge() {
 }
 
 // non cancellare
-starForge();
-asteroidForge();
+/*starForge();
+asteroidForge();*/
 
 //model textureLoader
 function loadModel(name, typeSShip) {
@@ -347,6 +347,14 @@ textureLoader.load('./models/texture/moon.jpg', function (texture) {
     scene.add(moon);
 });
 // =================================================================================================
+
+boss = new SpaceShipBossModel("boss");
+boss.model.rotation.z = -Math.PI / 2;
+boss.model.rotation.y = -Math.PI / 2;
+boss.model.position.z = -40;
+boss.model.position.y = 0;
+boss.model.position.x = 0;
+scene.add(boss.model);
 
 // lights
 var light = new THREE.AmbientLight(0x404040); // soft white light
