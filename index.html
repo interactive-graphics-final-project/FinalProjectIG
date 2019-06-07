@@ -79,10 +79,10 @@
 
 </div>
 <!-- Help Button -->
-<button type="button" class="btn btn-danger btn-circle" onclick="showHtml('instructions', false)">?</button>
+<button type="button" class="btn btn-danger btn-circle" onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?</button>
 
-<div id="instructions">
-    <div style="padding: 30px">
+<div id="instructions" style="background-color: #424242;">
+    <div style="padding: 30px; ;">
         <h1 class="text-center">instructions</h1>
         <h3 class="text-center"><u style="color: red;">on gitHub pages this game work only with firefox</u></h3>
         <h4>Commands</h4>
@@ -94,7 +94,7 @@
             </ul>
         <h4>how play</h4>
     </div>
-    <button type="button" class="btn btn-danger btn-circle closeButton" onclick="hideHtml('instructions', false)">?
+    <button type="button" class="btn btn-danger btn-circle closeButton" onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
     </button>
 </div>
 

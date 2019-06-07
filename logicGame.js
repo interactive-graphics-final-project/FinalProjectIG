@@ -32,11 +32,11 @@ var mouseX = 0, mouseY = 0;
 // stars array
 var stars = [];
 // asteroid array
-var asteroids = [], radiusAsteroids = 28;
+var asteroids = [], radiusAsteroids = 80;
 // Bullets array
 var bullets = [];
 // sounds array
-var sounds = [];
+var sounds = [], soundEffectExplosion = false;
 
 //flag bullet swapping dx and sx
 var sx = true;
@@ -55,6 +55,9 @@ function startGame() {
     start = true;
     pause = false;
     gameOver = false;
+
+    //reset sounds
+    sounds = [];
 
     //playSound
     playSound("AsteroidChase", true, false);
@@ -135,12 +138,14 @@ function switchShip(type) {
 
     scene.remove(spaceShip);
     if (type === 0) {
+        camera.position.z = 5;
         loadModel("star-wars-vader-tie-fighter", type);
     }
     if (type === 1) {
         //loadModel("x-wing");
     }
     if (type === 2) {
+        camera.position.z = 15;
         loadModel("star-wars-arc-170-pbr", type);
     }
 }
@@ -183,14 +188,10 @@ document.addEventListener("keydown", function (event) {
             pause = !pause;
             if (pause === true) {
                 showHtml("secondMenu", true);
-                for (var i = 0; i < sounds.length; i++) {
-                    sounds[i].pause();
-                }
+                pauseAllSounds()
             } else {
                 hideHtml("secondMenu", true);
-                for (var i = 0; i < sounds.length; i++) {
-                    sounds[i].play();
-                }
+                playAllSounds()
             }
 
         }
@@ -210,13 +211,15 @@ document.addEventListener('mousemove', function (e) {
 document.addEventListener('click', function (e) {
     shooting = true;
     //playSound
-    switch (typeSpaceShip) {
-        case 0:
-            playSound("TIE-fighterFire", false, true);
-            break;
-        case 2:
-            playSound("ARCFire", false, true);
-            break;
+    if (start === true && pause === false) {
+        switch (typeSpaceShip) {
+            case 0:
+                playSound("TIE-fighterFire", false, true);
+                break;
+            case 2:
+                playSound("ARCFire", false, true);
+                break;
+        }
     }
 
 }, false);
@@ -262,8 +265,8 @@ function starForge() {
 
 function asteroidForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    var i = -11000;
-    for (var z = -10000; z < -100; z += (10 / lvl)) {
+    var i = -7000;
+    for (var z = -7000; z < -500; z += 30) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
             var geometry = new THREE.SphereBufferGeometry(radiusAsteroids, Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
@@ -271,7 +274,7 @@ function asteroidForge() {
             var asteroid = new THREE.Mesh(geometry, material);
 
             // This time we give the sphere random x and y positions between -500 and 500
-            asteroid.position.x = Math.random() * 1000 - 500;
+            asteroid.position.x = Math.random() * 2000 - 1000;
             asteroid.position.y = Math.random() * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
             asteroid.position.z = i;
@@ -279,14 +282,14 @@ function asteroidForge() {
             scene.add(asteroid);
             //finally push it to the stars array
             asteroids.push(asteroid);
-            i += 12;
+            i += 30;
         });
     }
 }
 
 // non cancellare
-//starForge();
-//asteroidForge();
+starForge();
+asteroidForge();
 
 //model textureLoader
 function loadModel(name, typeSShip) {
@@ -325,18 +328,18 @@ loadModel("star-wars-vader-tie-fighter", typeSpaceShip);
 
 // planet creation
 textureLoader.load('./models/texture/sun.jpg', function (texture) {
-    var geometry = new THREE.SphereBufferGeometry(300, 32, 32);
+    var geometry = new THREE.SphereBufferGeometry(340, 32, 32);
     var material = new THREE.MeshBasicMaterial({map: texture});
     var sphere = new THREE.Mesh(geometry, material);
 
-    sphere.position.set(100, 700, -1000);
+    sphere.position.set(200, 900, -1500);
     var light1 = new THREE.PointLight(0xffb04a, 4, 0, 2);
     light1.position.set(534, 200, -966);
     light1.add(sphere);
     scene.add(light1);
 });
 textureLoader.load('./models/texture/moon.jpg', function (texture) {
-    var geometry = new THREE.SphereBufferGeometry(210, 32, 32);
+    var geometry = new THREE.SphereBufferGeometry(230, 32, 32);
     var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.2});
     var moon = new THREE.Mesh(geometry, material);
 
@@ -360,15 +363,28 @@ function update() {
     if (modelLoaded === true) {
         if (start === true && pause === false && gameOver === false) {
             if (health <= 0) {
+
                 spaceShip.rotation.y += 0.2;
                 spaceShip.position.y -= 0.05;
                 spaceShip.position.z -= 0.2;
                 spaceShip.position.x += 0.1;
+                if (soundEffectExplosion === false) {
+                    switch (typeSpaceShip) {
+                        case 0:
+                            playSound("TIE-fighterExplode", false, true);
+                            break;
+                        case 2:
+                            playSound("ARCExplode", false, true);
+                            break;
+                    }
+                }
+                soundEffectExplosion = true;
                 setTimeout(function () {
                     if (health <= 0 && gameOver === false) {
                         gameOver = true;
+                        pauseAllSounds();
                     }
-                }, 5000);
+                }, 4000);
                 showHtml("gameOver", true);
             } else {
                 spaceShip.position.x = mouseX * 0.008;
@@ -392,10 +408,10 @@ function update() {
                 if (turbo === true)
                     asteroids[iAst].position.z += 10;
                 // if the particle is too close move it to the back
-                if (asteroids[iAst].position.z > 1000) asteroids[iAst].position.z = -10000;
+                if (asteroids[iAst].position.z > 500) asteroids[iAst].position.z = -7000;
 
-                if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + 30)) {
-                    health -= 0.5 * lvl;
+                if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
+                    health -= 3 * lvl;
                     if (health >= 0)
                         document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
                 }
@@ -424,11 +440,12 @@ function update() {
                         //update score
                         score += 0.1;
                         document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+                        playSound("TIE-fighterExplode", false, true);
 
                         // target hit - remove the bullet
                         scene.remove(bullets[iBull]);
                         // place the asteroids in the init position
-                        asteroids[iAst].position.z = -11000;
+                        asteroids[iAst].position.z = -7100;
                         bullets[iBull].alive = false;
                     }
                 }
@@ -487,6 +504,7 @@ function hideHtml(id, cursor) {
         document.body.style.cursor = "none";
 }
 
+// sound functions
 function playSound(name, loop, positional) {
 // create an AudioListener and add it to the camera
     var listener = new THREE.AudioListener();
@@ -507,11 +525,25 @@ function playSound(name, loop, positional) {
         spaceShip.add(sound);
     else
         scene.add(sound);
-    sounds.push(sound);
+
+    if (loop === true)
+        sounds.push(sound);
 }
 
+function pauseAllSounds() {
+    for (var i = 0; i < sounds.length; i++) {
+        sounds[i].pause();
+    }
+}
 
-// draw Scene
+function playAllSounds() {
+    for (var i = 0; i < sounds.length; i++) {
+        sounds[i].play();
+    }
+}
+
+// =================================  draw Scene  ============================
+// structural TRHEE JS functions
 function render() {
     renderer.render(scene, camera);
 }
