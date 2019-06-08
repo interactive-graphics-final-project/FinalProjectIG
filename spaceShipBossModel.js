@@ -40,7 +40,7 @@ SpaceShipBossModel.materials2 = new THREE.MeshPhongMaterial({
     bumpScale: 0.3,
     color: 0xffffff
 });
-SpaceShipBossModel.material4 = new THREE.MeshBasicMaterial({color: 0xffffff, specular: 0xffffff, ambient: 0xffffff});
+SpaceShipBossModel.material4 = new THREE.MeshBasicMaterial({color: 0xffffff});
 
 SpaceShipBossModel.prototype.createHead = function () {
     head = new THREE.Object3D();
