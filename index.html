@@ -7,98 +7,133 @@
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<body id="body">
-
-<script src="./build/three.js"></script>
-<script src="./js/controls/OrbitControls.js"></script>
-<script src="./js/loaders/deprecated/LegacyJSONLoader.js"></script>
-<script src="./js/WebGL.js"></script>
-
-
-<div id="health">
-    Health: 100 / 100
-</div>
-<div id="score">
-    Score: 0
+<body id="body" style="background-color: black;">
+<div id="modal" >
+    <h1 class="title">Loading... wait please</h1>
+    <h3 class="text-center"><u style="color: red;">on gitHub pages this game work only with firefox</u></h3>
 </div>
 
-<div id="gameOver">
-    <div class="title">
-        GAME oVER
-    </div>
-    <div class="returnMenu">
-        <h1 class="clickable" onclick="returnMenu()" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">Main Menu</h1>
-    </div>
-</div>
-
-<div id="secondMenu">
-    <div class="title">
-        PAUSE
-    </div>
-    <div class="returnMenu">
-        <h1 class="clickable" onclick="returnMenu()" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+<div id='Container'>
+    <h3 id="titlePlayerHealth">health:</h3>
+    <div id="playerHealth">
+        <div id="valueHealthPlayer">
+        </div>
     </div>
 
-</div>
-<div id="mainMenu">
-    <div id="title">
-        the war of the meteorites
-    </div>
-    <!--    <div id="ship1">
-            <h4 class="ship" id="1" onclick="switchShip(1)" onmouseout="this.style.cursor='default';"
-                onmouseover="this.style.cursor='pointer';">x - wing</h4>
-        </div>-->
-    <div id="easy">
-        <h4 class="lvl" id="lvl1" onclick="switchLvl(1)" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Easy</h4>
-    </div>
-    <div id="medium">
-        <h4 class="lvl" id="lvl2" onclick="switchLvl(2)" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">Medium</h4>
-    </div>
-    <div id="hard">
-        <h4 class="lvl" id="lvl3" onclick="switchLvl(3)" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">Hard</h4>
+    <h3 id="titleBossHealth">boss health:</h3>
+    <div id="bossHealth">
+        <div id="valueHealthBoss">
+        </div>
     </div>
 
-
-    <div id="ship1">
-        <h4 class="ship" id="0" onclick="switchShip(0)" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Tie - Fighter</h4>
-    </div>
-    <div id="ship3">
-        <h4 class="ship" id="2" onclick="switchShip(2)" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">arc - 170pbr (beta)</h4>
-    </div>
-    <div id="start">
-        <h1 class="clickable" onclick="startGame()" onmouseout="this.style.cursor='default';"
-            onmouseover="this.style.cursor='pointer';">Play game</h1>
+    <div id="score">
+        Score: 0
     </div>
 
-</div>
-<!-- Help Button -->
-<button type="button" class="btn btn-danger btn-circle" onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?</button>
+    <div id="victory">
+        <div class="title">
+            victory
+        </div>
+        <div class="returnMenu">
+            <h1 class="clickable" onclick="reloadGame()" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+        </div>
+    </div>
 
-<div id="instructions" style="background-color: #424242;">
-    <div style="padding: 30px; ;">
-        <h1 class="text-center">instructions</h1>
-        <h3 class="text-center"><u style="color: red;">on gitHub pages this game work only with firefox</u></h3>
-        <h4>Commands</h4>
+    <div id="gameOver">
+        <div class="title">
+            game over
+        </div>
+        <div class="returnMenu">
+            <h1 class="clickable" onclick="reloadGame()" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+        </div>
+    </div>
+
+    <div id="secondMenu">
+        <div class="title">
+            PAUSE
+        </div>
+        <div class="returnMenu">
+            <h1 class="clickable" onclick="reloadGame()" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Main Menu</h1>
+        </div>
+
+    </div>
+    <div id="mainMenu">
+        <div id="title">
+            the war of the meteorites
+        </div>
+        <!--    <div id="ship1">
+                <h4 class="ship" id="1" onclick="switchShip(1)" onmouseout="this.style.cursor='default';"
+                    onmouseover="this.style.cursor='pointer';">x - wing</h4>
+            </div>-->
+        <div id="easy">
+            <h4 class="lvl" id="lvl1" onclick="switchLvl(1)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Easy</h4>
+        </div>
+        <div id="medium">
+            <h4 class="lvl" id="lvl2" onclick="switchLvl(2)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Medium</h4>
+        </div>
+        <div id="hard">
+            <h4 class="lvl" id="lvl3" onclick="switchLvl(3)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Hard</h4>
+        </div>
+
+        <div id="ship1">
+            <h4 class="ship" id="0" onclick="switchShip(0)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';" style="text-decoration: underline">Tie - Fighter</h4>
+        </div>
+        <div id="ship3">
+            <h4 class="ship" id="2" onclick="switchShip(2)" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">arc - 170pbr (beta)</h4>
+        </div>
+        <div id="start">
+            <h1 class="clickable" onclick="startGame()" onmouseout="this.style.cursor='default';"
+                onmouseover="this.style.cursor='pointer';">Play game</h1>
+        </div>
+
+    </div>
+    <!-- Help Button -->
+    <button type="button" class="btn btn-danger btn-circle"
+            onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?
+    </button>
+
+    <div id="instructions" style="background-color: black; border:2px solid #ECC760; opacity: 50%">
+        <div style="padding: 30px; ;">
+            <h1 class="text-center">instructions</h1>
+            <h3 class="text-center"><u style="color: red;">on gitHub pages this game work only with firefox</u></h3>
+            <h4>Commands</h4>
             <ul style="font-family: Roboto; font-size: 28px;">
                 <li><b>Left Click</b>: Shoot</li>
                 <li><b>Mouse Position</b>: movement spaceship</li>
                 <li><b>T</b>: turbo</li>
                 <li><b>Esc</b>: pause</li>
             </ul>
-        <h4>how play</h4>
+            <h4>how play</h4>
+        </div>
+        <button type="button" class="btn btn-danger btn-circle closeButton"
+                onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
+        </button>
     </div>
-    <button type="button" class="btn btn-danger btn-circle closeButton" onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
-    </button>
 </div>
 
 </body>
+
+<script src="./build/three.js"></script>
+<script src="./js/controls/OrbitControls.js"></script>
+<script src="./js/loaders/deprecated/LegacyJSONLoader.js"></script>
+<script src="./js/WebGL.js"></script>
 <script src="./spaceShipBossModel.js"></script>
 <script src="./logicGame.js"></script>
+<script>
+
+    window.onload = function () {
+        setTimeout(function () {
+            document.getElementById('Container').style.display = "block";
+            document.getElementById('modal').style.display = "none";
+        }, 2000);
+    }
+</script>
 </html>

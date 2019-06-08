@@ -17,7 +17,10 @@ body {
 
     /* hide scrollbars */
     overflow: hidden;
+}
 
+#Container{
+    display: none;
 }
 
 #start {
@@ -46,22 +49,65 @@ body {
 
 #score {
     position: absolute;
-    top: 1%;
+    top: 0;
+    right: 12.5%;
     text-align: right;
     width: 100%;
     font-size: 28px;
     display: none;
 }
-
-#health {
+/* Management health player*/
+#titlePlayerHealth{
     position: absolute;
     top: 4.5%;
-    text-align: right;
-    width: 100%;
-    font-size: 28px;
+    right: 17%;
     display: none;
 }
 
+#playerHealth {
+    position: absolute;
+    top: 5.5%;
+    right: 1%;
+    width: 15%;
+    height: 2%;
+    background-color: white;
+    border-radius: 7px;
+    display: none;
+}
+
+#valueHealthPlayer{
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+    background-color: #ECC760;
+}
+
+
+/* Management health boss*/
+#titleBossHealth{
+    position: absolute;
+    top: 7.5%;
+    right: 17%;
+    display: none;
+}
+
+#bossHealth {
+    position: absolute;
+    top: 8.5%;
+    right: 1%;
+    width: 15%;
+    height: 2%;
+    background-color: white;
+    border-radius: 7px;
+    display: none;
+}
+
+#valueHealthBoss{
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+    background-color: red;
+}
 .commands {
     font-family: Roboto;
     position: absolute;
@@ -74,6 +120,14 @@ body {
 }
 
 #gameOver {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+#victory{
     position: absolute;
     top: 0;
     width: 100%;

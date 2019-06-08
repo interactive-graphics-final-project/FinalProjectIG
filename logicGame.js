@@ -3,7 +3,7 @@ if (WEBGL.isWebGLAvailable() === false) {
 }
 
 // FPS UI
-(function () {
+/*(function () {
     var script = document.createElement('script');
     script.onload = function () {
         var stats = new Stats();
@@ -15,7 +15,7 @@ if (WEBGL.isWebGLAvailable() === false) {
     };
     script.src = '//mrdoob.github.io/stats.js/build/stats.min.js';
     document.head.appendChild(script);
-})();
+})();*/
 //============================================================================
 
 
@@ -34,17 +34,18 @@ var stars = [];
 // asteroid array
 var asteroids = [], radiusAsteroids = 80;
 // Bullets array
-var bullets = [];
+var bullets = [], bulletsB = [], shoot = true;
 // sounds array
-var sounds = [], soundEffectExplosion = false;
+var sounds = [], soundEffectExplosion = false, battleAlarm = false;
+;
 
 //flag bullet swapping dx and sx
 var sx = true;
 var turbo = false;
 var spaceShip = null, typeSpaceShip = 0;
 var modelLoaded = false;
-var pause = false, start = false, gameOver = false;
-var score = 0, health = 100, lvl = 1;
+var pause = false, start = false, gameOver = false, victory = false, stopAnimation = false;
+var score = 0, health = 100, healthBoss = 100, lvl = 1;
 
 // textureLoader variable
 var textureLoader = new THREE.TextureLoader();
@@ -56,6 +57,12 @@ function startGame() {
     pause = false;
     gameOver = false;
 
+    // reset boss position
+    boss.model.rotation.z = -Math.PI / 2;
+    boss.model.rotation.y = -Math.PI / 2;
+    boss.model.position.z = -10000;
+    boss.model.position.y = -1;
+
     //reset sounds
     sounds = [];
 
@@ -64,6 +71,7 @@ function startGame() {
 
     // init variable
     health = 100;
+    healthBoss = 100;
     score = 0;
 
     // disable auto rotation and orbit control
@@ -72,14 +80,19 @@ function startGame() {
 
     // reset the score and the health
     document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
-    document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
+
+    document.getElementById("valueHealthPlayer").style.width = '100%';
+    document.getElementById("valueHealthBoss").style.width = '100%';
 
     // hide the main menu
     hideHtml("mainMenu", true);
 
     // show the score and health (initialized)
     showHtml("score", false);
-    showHtml("health", false);
+    // show health player
+    showHtml("playerHealth", false);
+    showHtml("titlePlayerHealth", false);
+
 
     // set camera position based on the model loaded
     switch (typeSpaceShip) {
@@ -94,38 +107,10 @@ function startGame() {
     }
 }
 
-function returnMenu() {
-    start = false;
-    pause = false;
-    gameOver = false;
-
-    // init variable
-    health = 100;
-    health = 100;
-    score = 0;
-    // reload default spaceship
-    scene.remove(spaceShip);
-    loadModel("star-wars-vader-tie-fighter", 0);
-
-    // enable auto rotation and drag control
-    controls.enabled = true;
-
-    // hide others menu
-    hideHtml("secondMenu", false);
-    hideHtml("gameOver", false);
-    // hide score and health
-    hideHtml("score", false);
-    hideHtml("health", false);
-
-    // show main menu
-    showHtml("mainMenu", true);
-
-    // button spaceShip underline
-    var elem = document.getElementsByClassName("ship");
-    for (var i = 0; i < elem.length; i++)
-        elem[i].style.textDecoration = "none";
-    document.getElementById("0").style.textDecoration = "underline";
-    // ==========================
+function reloadGame() {
+    document.getElementById('Container').style.display = "none";
+    document.getElementById('modal').style.display = "block";
+    location.reload(true)
 }
 
 function switchShip(type) {
@@ -166,7 +151,7 @@ scene = new THREE.Scene();
 renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+document.getElementById('Container').appendChild(renderer.domElement);
 
 //camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
@@ -211,7 +196,7 @@ document.addEventListener('mousemove', function (e) {
 document.addEventListener('click', function (e) {
     shooting = true;
     //playSound
-    if (start === true && pause === false) {
+    if (start === true && pause === false && gameOver === false) {
         switch (typeSpaceShip) {
             case 0:
                 playSound("TIE-fighterFire", false, true);
@@ -264,6 +249,7 @@ function starForge() {
 }
 
 function asteroidForge() {
+    asteroids = [];
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
     var i = -7000;
     for (var z = -7000; z < -500; z += 30) {
@@ -288,8 +274,8 @@ function asteroidForge() {
 }
 
 // non cancellare
-/*starForge();
-asteroidForge();*/
+starForge();
+asteroidForge();
 
 //model textureLoader
 function loadModel(name, typeSShip) {
@@ -347,13 +333,11 @@ textureLoader.load('./models/texture/moon.jpg', function (texture) {
     scene.add(moon);
 });
 // =================================================================================================
-
-boss = new SpaceShipBossModel("boss");
+var boss = new SpaceShipBossModel("boss");
 boss.model.rotation.z = -Math.PI / 2;
 boss.model.rotation.y = -Math.PI / 2;
-boss.model.position.z = -40;
-boss.model.position.y = 0;
-boss.model.position.x = 0;
+boss.model.position.z = -10000;
+boss.model.position.y = -1;
 scene.add(boss.model);
 
 // lights
@@ -364,37 +348,37 @@ scene.add(directionalLight);
 
 // init camera position
 camera.position.z = 5;
+var bossVerticalMovement = 0;
+var bossHorizzontalMovement = 0;
+
 
 //game Logic
 function update() {
 
     if (modelLoaded === true) {
-        if (start === true && pause === false && gameOver === false) {
-            if (health <= 0) {
+        if (start === true && pause === false && gameOver === false && victory === false) {
 
-                spaceShip.rotation.y += 0.2;
-                spaceShip.position.y -= 0.05;
-                spaceShip.position.z -= 0.2;
-                spaceShip.position.x += 0.1;
-                if (soundEffectExplosion === false) {
-                    switch (typeSpaceShip) {
-                        case 0:
-                            playSound("TIE-fighterExplode", false, true);
-                            break;
-                        case 2:
-                            playSound("ARCExplode", false, true);
-                            break;
-                    }
-                }
+            // management of victory and game over
+            if (healthBoss <= 0 && victory === false) {
+                if (soundEffectExplosion === false)
+                    playSound("TIE-fighterExplode", false, false);
                 soundEffectExplosion = true;
-                setTimeout(function () {
-                    if (health <= 0 && gameOver === false) {
-                        gameOver = true;
-                        pauseAllSounds();
-                    }
-                }, 4000);
+
+                if (healthBoss <= 0 && victory === false) {
+                    victory = true;
+                    pauseAllSounds();
+                }
+
+                showHtml("victory", true);
+            }
+            if (health <= 0 && gameOver === false) {
+                gameOver = true;
+                pauseAllSounds();
+
                 showHtml("gameOver", true);
-            } else {
+            }
+            // if not gameover and not victory spaceship could move
+            else {
                 spaceShip.position.x = mouseX * 0.008;
                 spaceShip.position.y = (-mouseY) * 0.01 + (typeSpaceShip === 0 ? 0 : -5);
                 spaceShip.rotation.z = mouseX * (typeSpaceShip === 0 ? 0.0007 : 0.00001);
@@ -408,25 +392,125 @@ function update() {
                 }
             }
 
-            // loop through each asteroids
-            for (var iAst = 0; iAst < asteroids.length; iAst++) {
-                asteroids[iAst].position.z += lvl * 18;
-                asteroids[iAst].rotation.x += iAst / 5100;
-                asteroids[iAst].rotation.z += iAst / 5500;
-                if (turbo === true)
-                    asteroids[iAst].position.z += 10;
-                // if the particle is too close move it to the back
-                if (asteroids[iAst].position.z > 500) asteroids[iAst].position.z = -7000;
+            // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
+            if (score >= 0.5) {
+                if (battleAlarm === false) {
+                    // show health boss
+                    showHtml("bossHealth", false);
+                    showHtml("titleBossHealth", false);
+                    playSound("BattleAllarm", false, false);
+                }
+                battleAlarm = true;
+                // loop through each asteroids
+                if (asteroids.length !== 0) {
+                    for (var iAst = 0; iAst < asteroids.length; iAst++) {
+                        asteroids[iAst].position.z += lvl * 18;
+                        asteroids[iAst].rotation.x += iAst / 5100;
+                        asteroids[iAst].rotation.z += iAst / 5500;
+                        if (turbo === true)
+                            asteroids[iAst].position.z += 10;
+                        // if the particle is too close move it to the back
+                        if (asteroids[iAst].position.z > 500) {
+                            asteroids[iAst].position.z = -11000;
+                            scene.remove(asteroids[iAst]);
+                            asteroids.splice(iAst, 1);
+                            continue;
+                        }
 
-                if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
-                    health -= 3 * lvl;
-                    if (health >= 0)
-                        document.getElementById("health").innerHTML = "Health: " + health + ' / 100';
+                        if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
+                            health -= 3 * lvl;
+                            if (health >= 0)
+                                document.getElementById("valueHealthPlayer").style.width = health + '%';
+                        }
+                    }
+                }
+
+                if (boss.model.position.z < -50)
+                    boss.model.position.z += 50;
+                if (boss.model.position.z <= -50)
+                    baseCannon.rotation.x = -0.01 * spaceShip.position.x;
+
+                boss.model.position.x = 3 * Math.cos(bossHorizzontalMovement += 0.02);
+                if (health > 0)
+                    boss.model.position.y = spaceShip.position.y;
+
+
+                for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
+
+                    // if the bullets position on z axis < -200 ill remove it
+                    if (bulletsB[iBBull].position.z > 100) {
+                        scene.remove(bulletsB[iBBull]);
+                        bulletsB[iBBull].alive = false;
+                    }
+                    if (bulletsB[iBBull] === undefined) continue;
+                    if (bulletsB[iBBull].alive === false) {
+                        bulletsB.splice(iBBull, 1);
+                        continue;
+                    }
+                    bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
+
+                    if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
+                        health -= 3 / lvl;
+                        if (health >= 0)
+                            document.getElementById("valueHealthPlayer").style.width = health + '%';
+                    }
+                }
+
+                // boss shoot !!
+                setTimeout(function () {
+                    shoot = !shoot
+                }, 2000);
+                if (boss.model.position.z === -50 && shoot === true) {
+
+                    var geometryb = new THREE.CylinderGeometry(0.05, 0.05, 3, 12);
+                    var materialb = new THREE.MeshBasicMaterial({
+                        color: 0xff0000,
+                        refractionRatio: 0.98,
+                        reflectivity: 0.9
+                    });
+                    var bulletb = new THREE.Mesh(geometryb, materialb);
+                    bulletb.rotation.z = Math.PI / 2;
+                    bulletb.rotation.y = Math.PI / 2;
+                    // position the bullet to come from the player's weapon
+
+                    bulletb.position.set(boss.model.position.x, boss.model.position.y + 1.4, boss.model.position.z + 3);
+
+                    // set the velocity of the bullet
+                    bulletb.velocity = new THREE.Vector3(
+                        -Math.sin(baseCannon.rotation.x),
+                        0,
+                        Math.cos(baseCannon.rotation.x)
+                    );
+
+                    bulletb.alive = true;
+                    //bulletb.rotation.x = cannon.rotation.x;
+                    // add to scene, array, and set the delay to 10 frames
+                    scene.add(bulletb);
+                    bulletsB.push(bulletb);
+                }
+                // normal management of asteroids
+            } else {
+
+                // loop through each asteroids
+                for (var iAst = 0; iAst < asteroids.length; iAst++) {
+                    asteroids[iAst].position.z += lvl * 18;
+                    asteroids[iAst].rotation.x += iAst / 5100;
+                    asteroids[iAst].rotation.z += iAst / 5500;
+                    if (turbo === true)
+                        asteroids[iAst].position.z += 10;
+                    // if the particle is too close move it to the back
+                    if (asteroids[iAst].position.z > 500) asteroids[iAst].position.z = -7000;
+
+                    if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
+                        health -= 3 * lvl;
+                        if (health >= 0)
+                            document.getElementById("valueHealthPlayer").style.width = health + '%';
+                    }
                 }
             }
 
-            // go through bullets array and update position
-            // remove bullets when appropriate
+            // ========================  MANAGEMENT OF BULLETS PLAYER  ============================
+            // go through bullets array and update position - remove bullets when appropriate
             for (var iBull = 0; iBull < bullets.length; iBull += 1) {
 
                 // if the bullets position on z axis < -200 ill remove it
@@ -441,24 +525,30 @@ function update() {
                 }
                 bullets[iBull].position.add(bullets[iBull].velocity);
 
+                if (boss.model.position.distanceTo(bullets[iBull].position) <= (0.06 + 2)) {
+                    healthBoss -= 3 / lvl;
+                    if (health >= 0)
+                        document.getElementById("valueHealthBoss").style.width = healthBoss + '%';
+                }
 
+                // loop through each asteroids
                 for (iAst = 0; iAst < asteroids.length; iAst++) {
                     // computation of the Euclidian distance for the bullet detection
                     if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
                         //update score
                         score += 0.1;
                         document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
-                        playSound("TIE-fighterExplode", false, true);
+                        playSound("TIE-fighterExplode", false, false);
 
                         // target hit - remove the bullet
                         scene.remove(bullets[iBull]);
                         // place the asteroids in the init position
-                        asteroids[iAst].position.z = -7100;
+                        asteroids[iAst].position.z = score < 0.5 ? -7100 : 100;
                         bullets[iBull].alive = false;
                     }
                 }
             }
-            // space bar pressed - user shoot
+            // left click - user shoot
             if (shooting === true && health > 0) {
                 var geometry = new THREE.CylinderGeometry(0.05, 0.05, 3, 12);
                 var material = new THREE.MeshBasicMaterial({
@@ -469,7 +559,6 @@ function update() {
                 });
                 var bullet = new THREE.Mesh(geometry, material);
                 bullet.rotation.x = Math.PI / 2;
-                //lightBullet.position.set(spaceShip.position.x + (typeSpaceShip === 0 ? 0.1 : -13.7), spaceShip.position.y + 0.57, spaceShip.position.z - (typeSpaceShip === 0 ? 0.7 : 9));
                 // position the bullet to come from the player's weapon
                 if (sx === true)
                     bullet.position.set(spaceShip.position.x + (typeSpaceShip === 0 ? 0.17 : -13.7), spaceShip.position.y + 0.6, spaceShip.position.z - (typeSpaceShip === 0 ? 2.5 : 9));
@@ -497,6 +586,52 @@ function update() {
             controls.autoRotate = true;
             controls.update();
         }
+
+        //management of end game with gameover
+        if (gameOver === true && stopAnimation === false) {
+            setTimeout(function () {
+                stopAnimation = true
+            }, 3000);
+
+            spaceShip.rotation.y += 0.2;
+            spaceShip.position.y -= 0.05;
+            spaceShip.position.z -= 0.2;
+            spaceShip.position.x += 0.1;
+            if (soundEffectExplosion === false) {
+                switch (typeSpaceShip) {
+                    case 0:
+                        playSound("TIE-fighterExplode", false, true);
+                        break;
+                    case 2:
+                        playSound("ARCExplode", false, true);
+                        break;
+                }
+            }
+            soundEffectExplosion = true;
+
+            for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
+
+                // if the bullets position on z axis < -200 ill remove it
+                if (bulletsB[iBBull].position.z > 100) {
+                    scene.remove(bulletsB[iBBull]);
+                    bulletsB[iBBull].alive = false;
+                }
+                if (bulletsB[iBBull] === undefined) continue;
+                if (bulletsB[iBBull].alive === false) {
+                    bulletsB.splice(iBBull, 1);
+                    continue;
+                }
+                bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
+
+                if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
+                    health -= 3 / lvl;
+                    if (health >= 0)
+                        document.getElementById("valueHealthPlayer").style.width = health + '%';
+                }
+            }
+        }
+
+
     }
 }
 

@@ -148,7 +148,6 @@ SpaceShipBossModel.prototype.createBaseCannon = function () {
     var bodyBox1 = new THREE.Mesh(baseCannonGeometry, SpaceShipBossModel.material3);
     bodyBox1.position.y = 1.62;
     bodyBox1.position.x = -0.9;
-
     baseCannon.add(bodyBox1);
 
     var CannonGeometry = new THREE.CylinderBufferGeometry(0.05, 0.18, 1.5);
