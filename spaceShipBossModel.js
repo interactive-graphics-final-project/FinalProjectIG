@@ -31,7 +31,7 @@ SpaceShipBossModel.materials = new THREE.MeshPhongMaterial({
     map: SpaceShipBossModel.texture,
     bumpMap: SpaceShipBossModel.texture,
     bumpScale: 0.3,
-    color: 0x2181FF
+    color: 0xffffff
 });
 SpaceShipBossModel.material3 = new THREE.MeshPhongMaterial({map: SpaceShipBossModel.texture, bumpMap: SpaceShipBossModel.texture, bumpScale: 0.3});
 SpaceShipBossModel.materials2 = new THREE.MeshPhongMaterial({
