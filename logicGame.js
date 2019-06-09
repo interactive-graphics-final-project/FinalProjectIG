@@ -450,7 +450,7 @@ function update() {
                     bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
 
                     if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
-                        health -= 0.3 / lvl;
+                        health -= 0.3 * lvl;
                         if (health >= 0)
                             document.getElementById("valueHealthPlayer").style.width = health + '%';
                     }
