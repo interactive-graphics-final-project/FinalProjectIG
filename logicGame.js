@@ -221,10 +221,10 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
         // move the stars too close to the camera
-        if (sphere.position.z < 0 && sphere.position.z > -50) {
+        if (sphere.position.z < 0 && sphere.position.z > -90) {
             sphere.position.x = sphere.position.x -= 100;
         }
-        if (sphere.position.z >= 0 && sphere.position.z < 50) {
+        if (sphere.position.z >= 0 && sphere.position.z < 90) {
             sphere.position.x = sphere.position.x += 100;
         }
         //add the sphere to the scene
@@ -236,9 +236,8 @@ function starForge() {
 }
 
 function asteroidForge() {
-    asteroids = [];
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
-    var i = -7000;
+    var zPosition = -7000;
     for (var z = -7000; z < -500; z += 30) {
         // Make a sphere (exactly the same as before).
         textureLoader.load('./models/texture/asteroid.png', function (texture) {
@@ -250,17 +249,17 @@ function asteroidForge() {
             asteroid.position.x = Math.random() * 2000 - 1000;
             asteroid.position.y = Math.random() * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
-            asteroid.position.z = i;
+            asteroid.position.z = zPosition;
             //add the sphere to the scene
             scene.add(asteroid);
             //finally push it to the stars array
             asteroids.push(asteroid);
-            i += 30;
+            zPosition += 30;
         });
     }
 }
 
-// non cancellare
+// calling the method for the creation of stars anc asteroid
 starForge();
 asteroidForge();
 
@@ -312,7 +311,7 @@ textureLoader.load('./models/texture/sun.jpg', function (texture) {
     scene.add(light1);
 });
 textureLoader.load('./models/texture/earth.jpg', function (texture) {
-    var geometry = new THREE.SphereBufferGeometry(230, 32, 32);
+    var geometry = new THREE.SphereBufferGeometry(240, 32, 32);
     var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.2});
     var earth = new THREE.Mesh(geometry, material);
 
@@ -320,6 +319,8 @@ textureLoader.load('./models/texture/earth.jpg', function (texture) {
     scene.add(earth);
 });
 // =================================================================================================
+
+// creation of the boss ( hierarchical model )
 var boss = new SpaceShipBossModel("boss");
 boss.model.rotation.z = -Math.PI / 2;
 boss.model.rotation.y = -Math.PI / 2;
@@ -361,7 +362,7 @@ function update() {
 
                 showHtml("gameOver", true);
             }
-            // if not gameover and not victory spaceship could move
+            // if not gameOver and not victory spaceship could move
             else {
                 spaceShip.position.x = mouseX * 0.008;
                 spaceShip.position.y = (-mouseY) * 0.01 + (typeSpaceShip === 0 ? 0 : -5);
@@ -377,7 +378,7 @@ function update() {
             }
 
             // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
-            if (score >= lvl * 0.5) {
+            if (score >= lvl * 1.5) {
                 if (battleAlarm === false) {
                     // show health boss
                     showHtml("bossHealth", false);
@@ -580,7 +581,7 @@ function update() {
             controls.update();
         }
 
-        //management of end game with gameover
+        //management of end game with gameOver
         if (gameOver === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
@@ -623,6 +624,7 @@ function update() {
             rightWing.rotation.y += 0.08;
             rightWing.rotation.z += 0.05;
 
+            // continue the animation of bullets
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
 
                 // if the bullets position on z axis < -200 ill remove it
@@ -708,11 +710,9 @@ function render() {
 
 // run game loop (update, render, repeat)
 function GameLoop() {
-
     requestAnimationFrame(GameLoop);
     update();
     render();
-
 }
 
 // creation of the stars
