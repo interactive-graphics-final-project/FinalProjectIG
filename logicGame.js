@@ -450,7 +450,7 @@ function update() {
                     bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
 
                     if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
-                        health -= 3 / lvl;
+                        health -= 0.3 / lvl;
                         if (health >= 0)
                             document.getElementById("valueHealthPlayer").style.width = health + '%';
                     }
@@ -527,6 +527,8 @@ function update() {
 
                 if (boss.model.position.distanceTo(bullets[iBull].position) <= (0.06 + 2)) {
                     healthBoss -= 3 / lvl;
+                    score += 0.1;
+                    document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
                     if (health >= 0)
                         document.getElementById("valueHealthBoss").style.width = healthBoss + '%';
                 }
