@@ -229,7 +229,6 @@ function starForge() {
         // This time we give the sphere random x and y positions between -500 and 500
         sphere.position.x = Math.random() * 3000 - 1500;
         sphere.position.y = Math.random() * 3000 - 1500;
-        // Then set the z position to where it is in the loop (distance of camera)
         sphere.position.z = Math.random() * 3000 - 1500;
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
@@ -412,6 +411,7 @@ function update() {
                         // if the particle is too close move it to the back
                         if (asteroids[iAst].position.z > 500) {
                             asteroids[iAst].position.z = -11000;
+                            asteroids[iAst].position.z = Math.random() * 2000 - 1000;
                             scene.remove(asteroids[iAst]);
                             asteroids.splice(iAst, 1);
                             continue;
