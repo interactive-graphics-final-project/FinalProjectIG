@@ -3,7 +3,7 @@
 var listener = new THREE.AudioListener();
 
 var shooting = false;
-var godmode = false;
+var godMode = false;
 var camera, controls, scene, renderer;
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -149,16 +149,20 @@ document.addEventListener("keydown", function (event) {
     }
     // g key
     if (keyCode === 71) {
-        godmode = !godmode;
+        godMode = !godMode;
+        if (godMode === true)
+            document.getElementById("valueHealthPlayer").style.backgroundColor = 'blue';
+        else
+            document.getElementById("valueHealthPlayer").style.backgroundColor = '#ECC760';
     }
     // escape key
     if (keyCode === 27) {
         if (start === true && victory === false && gameOver === false) {
             pause = !pause;
-            if (pause === true ) {
+            if (pause === true) {
                 showHtml("secondMenu", true);
                 pauseAllSounds()
-            } else  {
+            } else {
                 hideHtml("secondMenu", true);
                 playAllSounds()
             }
@@ -350,8 +354,6 @@ function update() {
                     showHtml("victory", true);
                     pauseAllSounds();
                 }
-
-
             }
             if (health <= 0 && gameOver === false) {
                 gameOver = true;
@@ -398,7 +400,7 @@ function update() {
                             asteroids.splice(iAst, 1);
                             continue;
                         }
-                        if (!godmode) {
+                        if (!godMode) {
                             if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
                                 health -= 3 * lvl;
                                 if (health >= 0)
@@ -413,7 +415,7 @@ function update() {
                 if (boss.model.position.z <= -50)
                     baseCannon.rotation.x = -0.01 * spaceShip.position.x;
 
-                boss.model.position.x = 3 * Math.cos(bossHorizontalMovement += 0.02);
+                boss.model.position.x = 6 * Math.cos(bossHorizontalMovement += 0.025);
                 if (health > 0)
                     boss.model.position.y = spaceShip.position.y;
                 leftWing.rotation.z = spaceShip.position.y * 0.2;
@@ -434,7 +436,7 @@ function update() {
                     }
                     bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
 
-                    if (!godmode) {
+                    if (!godMode) {
                         if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
                             health -= 0.3 * lvl;
                             if (health >= 0)
@@ -475,7 +477,6 @@ function update() {
                 }
                 // normal management of asteroids
             } else {
-
                 // loop through each asteroids
                 for (var iAst = 0; iAst < asteroids.length; iAst++) {
                     asteroids[iAst].position.z += lvl * 18;
@@ -489,7 +490,7 @@ function update() {
                         asteroids[iAst].position.x = Math.random() * 2000 - 1000;
                     }
 
-                    if (!godmode) {
+                    if (!godMode) {
                         if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
                             health -= 3 * lvl;
                             if (health >= 0)
@@ -605,7 +606,7 @@ function update() {
         }
 
         // management of end game with victory
-        if(victory === true && stopAnimation === false){
+        if (victory === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
             }, 3000);
