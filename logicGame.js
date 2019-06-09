@@ -324,13 +324,13 @@ textureLoader.load('./models/texture/sun.jpg', function (texture) {
     light1.add(sphere);
     scene.add(light1);
 });
-textureLoader.load('./models/texture/moon.jpg', function (texture) {
+textureLoader.load('./models/texture/earth.jpg', function (texture) {
     var geometry = new THREE.SphereBufferGeometry(230, 32, 32);
     var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.2});
-    var moon = new THREE.Mesh(geometry, material);
+    var earth = new THREE.Mesh(geometry, material);
 
-    moon.position.set(-1700, -90, -2183);
-    scene.add(moon);
+    earth.position.set(-1700, -90, -2183);
+    scene.add(earth);
 });
 // =================================================================================================
 var boss = new SpaceShipBossModel("boss");
@@ -393,7 +393,7 @@ function update() {
             }
 
             // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
-            if (score >= 0.5) {
+            if (score >= lvl * 0.5) {
                 if (battleAlarm === false) {
                     // show health boss
                     showHtml("bossHealth", false);
