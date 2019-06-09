@@ -24,6 +24,7 @@ if (WEBGL.isWebGLAvailable() === false) {
 var listener = new THREE.AudioListener();
 
 var shooting = false;
+var godmode = false;
 var camera, controls, scene, renderer;
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -166,6 +167,10 @@ document.addEventListener("keydown", function (event) {
     // p key
     if (keyCode === 84) {
         turbo = true;
+    }
+    // g key
+    if (keyCode === 71) {
+        godmode = !godmode;
     }
     // escape key
     if (keyCode === 27) {
@@ -400,7 +405,7 @@ function update() {
                     playSound("BattleAllarm", false, false);
                 }
                 battleAlarm = true;
-                // loop through each asteroids
+                //loop through each asteroids
                 if (asteroids.length !== 0) {
                     for (var iAst = 0; iAst < asteroids.length; iAst++) {
                         asteroids[iAst].position.z += lvl * 18;
@@ -411,16 +416,16 @@ function update() {
                         // if the particle is too close move it to the back
                         if (asteroids[iAst].position.z > 500) {
                             asteroids[iAst].position.z = -11000;
-                            asteroids[iAst].position.z = Math.random() * 2000 - 1000;
                             scene.remove(asteroids[iAst]);
                             asteroids.splice(iAst, 1);
                             continue;
                         }
-
-                        if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
-                            health -= 3 * lvl;
-                            if (health >= 0)
-                                document.getElementById("valueHealthPlayer").style.width = health + '%';
+                        if (!godmode) {
+                            if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
+                                health -= 3 * lvl;
+                                if (health >= 0)
+                                    document.getElementById("valueHealthPlayer").style.width = health + '%';
+                            }
                         }
                     }
                 }
@@ -449,10 +454,12 @@ function update() {
                     }
                     bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
 
-                    if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
-                        health -= 0.3 * lvl;
-                        if (health >= 0)
-                            document.getElementById("valueHealthPlayer").style.width = health + '%';
+                    if (!godmode) {
+                        if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
+                            health -= 0.3 * lvl;
+                            if (health >= 0)
+                                document.getElementById("valueHealthPlayer").style.width = health + '%';
+                        }
                     }
                 }
 
@@ -499,12 +506,17 @@ function update() {
                     if (turbo === true)
                         asteroids[iAst].position.z += 10;
                     // if the particle is too close move it to the back
-                    if (asteroids[iAst].position.z > 500) asteroids[iAst].position.z = -7000;
+                    if (asteroids[iAst].position.z > 500) {
+                        asteroids[iAst].position.z = -7000;
+                        asteroids[iAst].position.x = Math.random() * 2000 - 1000;
+                    }
 
-                    if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
-                        health -= 3 * lvl;
-                        if (health >= 0)
-                            document.getElementById("valueHealthPlayer").style.width = health + '%';
+                    if (!godmode) {
+                        if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
+                            health -= 3 * lvl;
+                            if (health >= 0)
+                                document.getElementById("valueHealthPlayer").style.width = health + '%';
+                        }
                     }
                 }
             }
