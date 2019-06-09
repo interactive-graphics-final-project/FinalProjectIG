@@ -8,7 +8,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body id="body" style="background-color: black;">
-<div id="modal" >
+<div id="modal">
     <h1 class="title">Loading... please wait</h1>
     <h3 class="text-center"><u style="color: red;">Please, load this game on firefox</u></h3>
 </div>
@@ -100,24 +100,27 @@
             onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?
     </button>
 
-    <div id="instructions" style="background-color: black; border:2px solid #ECC760; opacity: 50%">
+    <div id="instructions" style="background-color: black; border:2px solid #ECC760; height: 95%">
         <div style="padding: 30px; ;">
             <h1 class="text-center">instructions</h1>
             <h3 class="text-center"><u style="color: red;">Please, load this game on firefox</u></h3>
-            <h4>Commands</h4>
-            <ul style="font-family: Roboto; font-size: 28px;">
-                <li><b>Left Click</b>: Shoot</li>
-                <li><b>Mouse Position</b>: movement spaceship</li>
-                <li><b>T</b>: turbo</li>
-                <li><b>Esc</b>: pause</li>
-            </ul>
-            <h4>how play</h4>
-            <ul style="...">
-                <br>Survive the wave of meteorites!</br>
-                <br>if you get hit you lose health, so be careful.</br>
-                <br>Destroy the meteorites to gain points and if you get enough points a new threat will appear...</br>
-                <br>Good luck!</br>
-            </ul>
+            <h3>Commands</h3>
+            <div style="font-size: 19px;">
+                <ul>
+                    <li><b>Left Click</b> : Shoot</li>
+                    <li><b>Mouse Position</b> : movement spaceship</li>
+                    <li><b>T</b> : turbo</li>
+                    <li><b>g</b> : god mode</li>
+                    <li><b>Esc</b> : pause</li>
+                </ul>
+            </div>
+            <h3>how play</h3>
+            <div class="text-center" style="font-size: 19px;">
+                <br>Survive the wave of meteorites!<br>
+                <br>if you get hit you lose health, so be careful.<br>
+                <br>Destroy the meteorites to gain points and if you get enough points a new threat will appear...<br>
+                <br>Good luck!
+            </div>
         </div>
         <button type="button" class="btn btn-danger btn-circle closeButton"
                 onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
@@ -139,7 +142,7 @@
         setTimeout(function () {
             document.getElementById('Container').style.display = "block";
             document.getElementById('modal').style.display = "none";
-        }, 4000);
+        }, 2000);
     }
 </script>
 </html>

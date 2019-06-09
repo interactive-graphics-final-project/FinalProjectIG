@@ -3,8 +3,6 @@ var body, head, leftWing, rightWing, baseCannon, cannon;
 var SpaceShipBossModel = function (inName) {
     this.model = new THREE.Object3D();
 
-    this.currentPose = SpaceShipBossModel.FLOAT;
-
     var body = this.createBody();
     body.position.set(0, -80, 0);
     this.model.add(body);
@@ -21,7 +19,6 @@ var SpaceShipBossModel = function (inName) {
 
     var baseCannon = this.createBaseCannon();
     this.model.add(baseCannon);
-
 
     return this;
 };
@@ -40,6 +37,7 @@ SpaceShipBossModel.materials2 = new THREE.MeshPhongMaterial({
     bumpScale: 0.3,
     color: 0xffffff
 });
+
 SpaceShipBossModel.material4 = new THREE.MeshBasicMaterial({color: 0xffffff});
 
 SpaceShipBossModel.prototype.createHead = function () {
@@ -55,7 +53,6 @@ SpaceShipBossModel.prototype.createHead = function () {
     head.add(body);
 
     head.name = "head";
-
     return head;
 };
 
@@ -123,7 +120,6 @@ SpaceShipBossModel.prototype.createRightWing = function () {
     rightWing = new THREE.Object3D();
 
     var wingGeometry = new THREE.BoxBufferGeometry(0.2, 1.2, 3.2);
-
     var bodyBox = new THREE.Mesh(wingGeometry,
         SpaceShipBossModel.material3);
     bodyBox.position.z = -2.5;
@@ -134,7 +130,6 @@ SpaceShipBossModel.prototype.createRightWing = function () {
         SpaceShipBossModel.material3);
     wingWeightBox.position.z = -4;
     rightWing.add(wingWeightBox);
-
 
     rightWing.name = "rightWing";
     return rightWing;
@@ -159,6 +154,5 @@ SpaceShipBossModel.prototype.createBaseCannon = function () {
     head.add(baseCannon);
 
     baseCannon.name = "baseCannon";
-
     return baseCannon;
 };

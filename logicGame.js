@@ -1,24 +1,3 @@
-if (WEBGL.isWebGLAvailable() === false) {
-    document.body.appendChild(WEBGL.getWebGLErrorMessage());
-}
-
-// FPS UI
-/*(function () {
-    var script = document.createElement('script');
-    script.onload = function () {
-        var stats = new Stats();
-        document.body.appendChild(stats.dom);
-        requestAnimationFrame(function loop() {
-            stats.update();
-            requestAnimationFrame(loop)
-        });
-    };
-    script.src = '//mrdoob.github.io/stats.js/build/stats.min.js';
-    document.head.appendChild(script);
-})();*/
-//============================================================================
-
-
 // loader
 // create an AudioListener and add it to the camera
 var listener = new THREE.AudioListener();
@@ -38,7 +17,7 @@ var asteroids = [], radiusAsteroids = 80;
 var bullets = [], bulletsB = [], shoot = true;
 // sounds array
 var sounds = [], soundEffectExplosion = false, battleAlarm = false;
-;
+
 
 //flag bullet swapping dx and sx
 var sx = true;
@@ -91,9 +70,9 @@ function startGame() {
     // show the score and health (initialized)
     showHtml("score", false);
     // show health player
+
     showHtml("playerHealth", false);
     showHtml("titlePlayerHealth", false);
-
 
     // set camera position based on the model loaded
     switch (typeSpaceShip) {
@@ -109,8 +88,8 @@ function startGame() {
 }
 
 function reloadGame() {
-    document.getElementById('Container').style.display = "none";
-    document.getElementById('modal').style.display = "block";
+    hideHtml('Container', true);
+    showHtml('modal', true);
     location.reload(true)
 }
 
@@ -124,14 +103,14 @@ function switchShip(type) {
 
     scene.remove(spaceShip);
     if (type === 0) {
-        camera.position.z = 5;
+
         loadModel("star-wars-vader-tie-fighter", type);
     }
     if (type === 1) {
         //loadModel("x-wing");
     }
     if (type === 2) {
-        camera.position.z = 15;
+        camera.position.z = -17;
         loadModel("star-wars-arc-170-pbr", type);
     }
 }
@@ -174,12 +153,12 @@ document.addEventListener("keydown", function (event) {
     }
     // escape key
     if (keyCode === 27) {
-        if (start === true) {
+        if (start === true && victory === false && gameOver === false) {
             pause = !pause;
-            if (pause === true) {
+            if (pause === true ) {
                 showHtml("secondMenu", true);
                 pauseAllSounds()
-            } else {
+            } else  {
                 hideHtml("secondMenu", true);
                 playAllSounds()
             }
@@ -351,13 +330,12 @@ var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 scene.add(directionalLight);
 
 // init camera position
-camera.position.z = 5;
+camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
 var bossHorizontalMovement = 0;
 
 
 //game Logic
 function update() {
-
     if (modelLoaded === true) {
         if (start === true && pause === false && gameOver === false && victory === false) {
 
@@ -369,10 +347,11 @@ function update() {
 
                 if (healthBoss <= 0 && victory === false) {
                     victory = true;
+                    showHtml("victory", true);
                     pauseAllSounds();
                 }
 
-                showHtml("victory", true);
+
             }
             if (health <= 0 && gameOver === false) {
                 gameOver = true;
@@ -622,6 +601,27 @@ function update() {
             }
             soundEffectExplosion = true;
 
+
+        }
+
+        // management of end game with victory
+        if(victory === true && stopAnimation === false){
+            setTimeout(function () {
+                stopAnimation = true
+            }, 3000);
+
+            boss.model.rotation.y += 0.1;
+            boss.model.position.z += 0.1;
+            boss.model.position.x += 0.01;
+            baseCannon.position.x -= 0.01;
+            baseCannon.rotation.x -= 0.03;
+            leftWing.position.z += 0.03;
+            leftWing.rotation.x += 0.05;
+            leftWing.rotation.z += 0.05;
+            rightWing.position.z -= 0.05;
+            rightWing.rotation.y += 0.08;
+            rightWing.rotation.z += 0.05;
+
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
 
                 // if the bullets position on z axis < -200 ill remove it
@@ -643,8 +643,6 @@ function update() {
                 }
             }
         }
-
-
     }
 }
 
@@ -675,7 +673,10 @@ function playSound(name, loop, positional) {
         sound.setBuffer(buffer);
         sound.setLoop(loop);
         sound.setRefDistance(20);
+        if (name === "TIE-fighterExplode" || "TIE-fighterFire")
+            sound.setVolume(0.4);
         sound.play();
+
     });
     if (positional)
         spaceShip.add(sound);
