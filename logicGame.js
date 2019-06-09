@@ -438,6 +438,9 @@ function update() {
                 boss.model.position.x = 3 * Math.cos(bossHorizzontalMovement += 0.02);
                 if (health > 0)
                     boss.model.position.y = spaceShip.position.y;
+                    leftWing.rotation.z = spaceShip.position.y * 0.2;
+                    rightWing.rotation.z = spaceShip.position.y * 0.2;
+
 
 
                 for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
