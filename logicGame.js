@@ -201,7 +201,7 @@ document.addEventListener('mousemove', function (e) {
 document.addEventListener('click', function (e) {
     shooting = true;
     //playSound
-    if (start === true && pause === false && gameOver === false) {
+    if (start === true && pause === false && gameOver === false && victory === false) {
         switch (typeSpaceShip) {
             case 0:
                 playSound("TIE-fighterFire", false, true);
@@ -352,8 +352,7 @@ scene.add(directionalLight);
 
 // init camera position
 camera.position.z = 5;
-var bossVerticalMovement = 0;
-var bossHorizzontalMovement = 0;
+var bossHorizontalMovement = 0;
 
 
 //game Logic
@@ -435,12 +434,11 @@ function update() {
                 if (boss.model.position.z <= -50)
                     baseCannon.rotation.x = -0.01 * spaceShip.position.x;
 
-                boss.model.position.x = 3 * Math.cos(bossHorizzontalMovement += 0.02);
+                boss.model.position.x = 3 * Math.cos(bossHorizontalMovement += 0.02);
                 if (health > 0)
                     boss.model.position.y = spaceShip.position.y;
-                    leftWing.rotation.z = spaceShip.position.y * 0.2;
-                    rightWing.rotation.z = spaceShip.position.y * 0.2;
-
+                leftWing.rotation.z = spaceShip.position.y * 0.2;
+                rightWing.rotation.z = spaceShip.position.y * 0.2;
 
 
                 for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
@@ -467,9 +465,7 @@ function update() {
                 }
 
                 // boss shoot !!
-                setTimeout(function () {
-                    shoot = !shoot
-                }, 2000);
+                shoot = !shoot;
                 if (boss.model.position.z === -50 && shoot === true) {
 
                     var geometryb = new THREE.CylinderGeometry(0.05, 0.05, 3, 12);
@@ -600,7 +596,7 @@ function update() {
                 shooting = false;
 
         } else if (start === false) {
-            controls.autoRotate = true;
+            controls.autoRotate = false;
             controls.update();
         }
 
