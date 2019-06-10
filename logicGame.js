@@ -12,7 +12,7 @@ var mouseX = 0, mouseY = 0;
 // stars array
 var stars = [];
 // asteroid array
-var asteroids = [], radiusAsteroids = 80;
+var asteroids = [], radiusAsteroids = 60;
 // Bullets array
 var bullets = [], bulletsB = [], shoot = true;
 // sounds array
@@ -221,11 +221,11 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
         // move the stars too close to the camera
-        if (sphere.position.z < 0 && sphere.position.z > -90) {
-            sphere.position.x = sphere.position.x -= 100;
+        if (sphere.position.z < 0 && sphere.position.z > -200) {
+            sphere.position.z = sphere.position.z -= 200;
         }
-        if (sphere.position.z >= 0 && sphere.position.z < 90) {
-            sphere.position.x = sphere.position.x += 100;
+        if (sphere.position.z >= 0 && sphere.position.z < 200) {
+            sphere.position.z = sphere.position.z += 200;
         }
         //add the sphere to the scene
         scene.add(sphere);
@@ -245,8 +245,8 @@ function asteroidForge() {
             var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.1});
             var asteroid = new THREE.Mesh(geometry, material);
 
-            // This time we give the sphere random x and y positions between -500 and 500
-            asteroid.position.x = Math.random() * 2000 - 1000;
+            // This time we give the sphere random x and y positions between -1000 and 1000
+            asteroid.position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
             asteroid.position.y = Math.random() * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
             asteroid.position.z = zPosition;
@@ -382,7 +382,7 @@ function update() {
                 //loop through each asteroids
                 if (asteroids.length !== 0) {
                     for (var iAst = 0; iAst < asteroids.length; iAst++) {
-                        asteroids[iAst].position.z += lvl * 18;
+                        asteroids[iAst].position.z += Math.sqrt(lvl) * 18;
                         asteroids[iAst].rotation.x += iAst / 5100;
                         asteroids[iAst].rotation.z += iAst / 5500;
                         if (turbo === true)
@@ -481,7 +481,7 @@ function update() {
             } else {
                 // loop through each asteroids
                 for (var iAst = 0; iAst < asteroids.length; iAst++) {
-                    asteroids[iAst].position.z += lvl * 18;
+                    asteroids[iAst].position.z += Math.sqrt(lvl) * 18;
                     asteroids[iAst].rotation.x += iAst / 5100;
                     asteroids[iAst].rotation.z += iAst / 5500;
                     if (turbo === true)
@@ -489,7 +489,7 @@ function update() {
                     // if the particle is too close move it to the back
                     if (asteroids[iAst].position.z > 500) {
                         asteroids[iAst].position.z = -7000;
-                        asteroids[iAst].position.x = Math.random() * 2000 - 1000;
+                        asteroids[iAst].position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
                     }
 
                     if (!godMode) {
@@ -506,7 +506,7 @@ function update() {
             // go through bullets array and update position - remove bullets when appropriate
             for (var iBull = 0; iBull < bullets.length; iBull += 1) {
 
-                // if the bullets position on z axis < -200 ill remove it
+                // if the bullets position on z axis < -70 ill remove it
                 if (bullets[iBull].position.z < -70) {
                     scene.remove(bullets[iBull]);
                     bullets[iBull].alive = false;
@@ -632,10 +632,15 @@ function update() {
             spaceShip.position.y -= spaceShip.position.z * 0.02;
             spaceShip.rotation.x +=  0.01;
 
+            //player bullets disappear
+            for (var iBBull = 0; iBBull < bullets.length; iBBull += 1) {
+                scene.remove(bullets[iBBull]);
+            }
+
             // continue the animation of bullets
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
 
-                // if the bullets position on z axis < -200 ill remove it
+                // if the bullets position on z axis > 100 ill remove it
                 if (bulletsB[iBBull].position.z > 100) {
                     scene.remove(bulletsB[iBBull]);
                     bulletsB[iBBull].alive =  false;
