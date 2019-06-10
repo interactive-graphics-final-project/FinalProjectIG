@@ -630,7 +630,7 @@ function update() {
                 // if the bullets position on z axis < -200 ill remove it
                 if (bulletsB[iBBull].position.z > 100) {
                     scene.remove(bulletsB[iBBull]);
-                    bulletsB[iBBull].alive = false;
+                    bulletsB[iBBull].alive =  false;
                 }
                 if (bulletsB[iBBull] === undefined) continue;
                 if (bulletsB[iBBull].alive === false) {
