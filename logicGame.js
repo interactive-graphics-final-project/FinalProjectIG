@@ -59,7 +59,7 @@ function startGame() {
     controls.enabled = false;
 
     // reset the score and the health
-    document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+    document.getElementById("score").innerHTML = "Score: " + score;
 
     document.getElementById("valueHealthPlayer").style.width = '100%';
     document.getElementById("valueHealthBoss").style.width = '100%';
@@ -455,7 +455,7 @@ function update() {
             }
 
             // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
-            if (score >= lvl * 1.5) {
+            if (score >= lvl * 1500) {
                 //loop through each asteroids
                 if (asteroids.length !== 0) {
                     for (var iAst = 0; iAst < asteroids.length; iAst++) {
@@ -473,8 +473,8 @@ function update() {
                         for (var iBull = 0; iBull < bullets.length; iBull += 1) {
                             if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
                                 //update score
-                                score += 0.1;
-                                document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+                                score += 100;
+                                document.getElementById("score").innerHTML = "Score: " + score;
                                 playSound("TIE-fighterExplode", false, false);
 
                                 // target hit - remove the bullet
@@ -611,8 +611,8 @@ function update() {
 
                 if (boss.model.position.distanceTo(bullets[iBull].position) <= (0.06 + 2)) {
                     healthBoss -= 3 / lvl;
-                    score += 0.1;
-                    document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+                    score += 100;
+                    document.getElementById("score").innerHTML = "Score: " + score;
                     if (health >= 0)
                         document.getElementById("valueHealthBoss").style.width = healthBoss + '%';
                 }
@@ -622,8 +622,8 @@ function update() {
                     // computation of the Euclidian distance for the bullet detection
                     if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
                         //update score
-                        score += 0.1;
-                        document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+                        score += 100;
+                        document.getElementById("score").innerHTML = "Score: " + score;
                         playSound("TIE-fighterExplode", false, false);
 
                         // target hit - remove the bullet
