@@ -88,9 +88,69 @@ function startGame() {
 }
 
 function reloadGame() {
+    pause = false;
+    start = false;
+    gameOver = false;
+    victory = false;
+    stopAnimation = false;
+
+
+    // init variable
+    health = 100;
+    healthBoss = 100;
+    score = 0;
+    // reload default spaceship
+    scene.remove(spaceShip);
+    loadModel("star-wars-vader-tie-fighter", 0);
+    camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
+
+    // reset boss position
+
+    boss.model.position.z = -10000;
+   /* scene.remove(boss);
+    boss = new SpaceShipBossModel("boss");
+    scene.add(boss);*/
+
+    // enable auto rotation and drag control
+    controls.enabled = true;
+
+    // hide others menu
+    hideHtml("secondMenu", false);
+    hideHtml("gameOver", false);
+    hideHtml("victory", false);
+    // hide score and health
+
+    hideHtml("titlePlayerHealth", false);
+    hideHtml("playerHealth", false);
+
+
+    hideHtml("titleBossHealth", false);
+    hideHtml("bossHealth", false);
+
+
+    hideHtml("score", false);
+
+
+    asteroidForge();
+    // show main menu
+    showHtml("mainMenu", true);
+
+    // button spaceShip underline
+    var elem = document.getElementsByClassName("ship");
+    for (var i = 0; i < elem.length; i++)
+        elem[i].style.textDecoration = "none";
+    document.getElementById("0").style.textDecoration = "underline";
+    // ==========================
+
+    /*camera = null; controls= null; scene= null; renderer= null;
+    stars = null; asteroids = null;
+    bullets = null; bulletsB = null; shoot = null;
+    sounds = null; soundEffectExplosion = null; battleAlarm = null;
+    textureLoader = null; objectLoader = null; listener= null;
+
     hideHtml('Container', true);
     showHtml('modal', true);
-    location.reload(true)
+    window.location.reload(true)*/
 }
 
 function switchShip(type) {
@@ -236,6 +296,12 @@ function starForge() {
 }
 
 function asteroidForge() {
+    if (asteroids !== null) {
+        for (var iAst = 0; iAst < asteroids.length; iAst++) {
+            scene.remove(asteroids[iAst]);
+        }
+    }
+    asteroids = [];
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
     var zPosition = -7000;
     for (var z = -7000; z < -500; z += 30) {
@@ -388,7 +454,7 @@ function update() {
                         if (turbo === true)
                             asteroids[iAst].position.z += 10;
                         // if the particle is too close move it to the back
-                        if (asteroids[iAst].position.z > 500) {
+                        if (asteroids[iAst].position.z > 50) {
                             scene.remove(asteroids[iAst]);
                             asteroids.splice(iAst, 1);
                             continue;
@@ -487,7 +553,7 @@ function update() {
                     if (turbo === true)
                         asteroids[iAst].position.z += 10;
                     // if the particle is too close move it to the back
-                    if (asteroids[iAst].position.z > 500) {
+                    if (asteroids[iAst].position.z > 50) {
                         asteroids[iAst].position.z = -7000;
                         asteroids[iAst].position.x = Math.random() * 2000 - 1000;
                     }
@@ -603,8 +669,6 @@ function update() {
                 }
             }
             soundEffectExplosion = true;
-
-
         }
 
         // management of end game victory
@@ -616,7 +680,7 @@ function update() {
             //boss death animation
             boss.model.rotation.y += 0.1;
             boss.model.position.z += 0.1;
-            boss.model.position.x  += 0.05;
+            boss.model.position.x += 0.05;
             boss.model.position.y -= 0.07;
             baseCannon.position.x -= 0.01;
             baseCannon.rotation.x -= 0.03;
@@ -628,9 +692,9 @@ function update() {
             rightWing.rotation.z += 0.05;
 
             //spaceship victory animation
-            spaceShip.position.z -= Math.exp(-spaceShip.position.z*0.0002);
+            spaceShip.position.z -= Math.exp(-spaceShip.position.z * 0.0002);
             spaceShip.position.y -= spaceShip.position.z * 0.02;
-            spaceShip.rotation.x +=  0.01;
+            spaceShip.rotation.x += 0.01;
 
             // continue the animation of bullets
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
@@ -638,7 +702,7 @@ function update() {
                 // if the bullets position on z axis < -200 ill remove it
                 if (bulletsB[iBBull].position.z > 100) {
                     scene.remove(bulletsB[iBBull]);
-                    bulletsB[iBBull].alive =  false;
+                    bulletsB[iBBull].alive = false;
                 }
                 if (bulletsB[iBBull] === undefined) continue;
                 if (bulletsB[iBBull].alive === false) {
