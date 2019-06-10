@@ -703,19 +703,7 @@ function update() {
 
             // continue the animation of bullets
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
-
-                // if the bullets position on z axis > 100 ill remove it
-                if (bulletsB[iBBull].position.z > 100) {
-                    scene.remove(bulletsB[iBBull]);
-                    bulletsB[iBBull].alive = false;
-                }
-                if (bulletsB[iBBull] === undefined) continue;
-                if (bulletsB[iBBull].alive === false) {
-                    bulletsB.splice(iBBull, 1);
-                    continue;
-                }
-                bulletsB[iBBull].position.add(bulletsB[iBBull].velocity);
-
+                scene.remove(bulletsB[iBBull]);
                 if (spaceShip.position.distanceTo(bulletsB[iBBull].position) <= (0.06 + 2)) {
                     health -= 3 / lvl;
                     if (health >= 0)
