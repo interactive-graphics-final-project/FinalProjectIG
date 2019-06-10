@@ -606,7 +606,7 @@ function update() {
 
         }
 
-        // management of end game with victory
+        // management of end game victory
         if (victory === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
