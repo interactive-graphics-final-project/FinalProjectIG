@@ -92,7 +92,9 @@ function reloadGame() {
     start = false;
     gameOver = false;
     victory = false;
-    stopAnimation = false;
+    setTimeout(function () {
+        stopAnimation = false
+    }, 3000);
     battleAlarm = false;
     soundEffectExplosion = false;
 
