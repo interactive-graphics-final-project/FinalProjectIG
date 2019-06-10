@@ -94,6 +94,7 @@ function reloadGame() {
     victory = false;
     stopAnimation = false;
     battleAlarm = false;
+    soundEffectExplosion = false;
 
     // init variable
     health = 100;
@@ -126,17 +127,11 @@ function reloadGame() {
     hideHtml("gameOver", false);
     hideHtml("victory", false);
     // hide score and health
-
     hideHtml("titlePlayerHealth", false);
     hideHtml("playerHealth", false);
-
-
     hideHtml("titleBossHealth", false);
     hideHtml("bossHealth", false);
-
-
     hideHtml("score", false);
-
 
     asteroidForge();
     // show main menu
