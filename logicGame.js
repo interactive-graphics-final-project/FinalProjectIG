@@ -470,6 +470,20 @@ function update() {
                             asteroids.splice(iAst, 1);
                             continue;
                         }
+                        for (var iBull = 0; iBull < bullets.length; iBull += 1) {
+                            if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
+                                //update score
+                                score += 0.1;
+                                document.getElementById("score").innerHTML = "Score: " + score.toFixed(2);
+                                playSound("TIE-fighterExplode", false, false);
+
+                                // target hit - remove the bullet
+                                scene.remove(bullets[iBull]);
+                                // place the asteroids in the init position
+                                scene.remove(asteroids[iAst]);
+                                bullets[iBull].alive = false;
+                            }
+                        }
                         if (!godMode) {
                             if (asteroids[iAst].position.distanceTo(spaceShip.position) <= (4.5 + radiusAsteroids + 2)) {
                                 health -= 3 * lvl;
