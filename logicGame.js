@@ -93,7 +93,7 @@ function reloadGame() {
     gameOver = false;
     victory = false;
     stopAnimation = false;
-
+    battleAlarm = false;
 
     // init variable
     health = 100;
@@ -107,6 +107,13 @@ function reloadGame() {
     // reset boss position
 
     boss.model.position.z = -10000;
+    boss.model.rotation.set(0,0,0);
+    leftWing.position.set(0,0,0);
+    rightWing.position.set(0,0,0);
+    baseCannon.position.set(0,0,0);
+    leftWing.rotation.set(0,0,0);
+    rightWing.rotation.set(0,0,0);
+
    /* scene.remove(boss);
     boss = new SpaceShipBossModel("boss");
     scene.add(boss);*/
@@ -404,9 +411,16 @@ scene.add(directionalLight);
 camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
 var bossHorizontalMovement = 0;
 
+console.log(leftWing.position)
+console.log(leftWing.rotation)
+console.log(rightWing.position)
+console.log(rightWing.rotation)
+console.log(baseCannon.rotation)
+
 
 //game Logic
 function update() {
+
     if (modelLoaded === true) {
         if (start === true && pause === false && gameOver === false && victory === false) {
 
