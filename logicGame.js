@@ -319,7 +319,7 @@ function asteroidForge() {
 
             // This time we give the sphere random x and y positions between -1000 and 1000
             asteroid.position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
-            asteroid.position.y = Math.random() * 1000 - 500;
+            asteroid.position.y = ((Math.random() + Math.random())/ 2) * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
             asteroid.position.z = zPosition;
             //add the sphere to the scene
@@ -476,10 +476,15 @@ function update() {
                         }
                         for (var iBull = 0; iBull < bullets.length; iBull += 1) {
                             if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
-                                // target hit - remove the bullet
-                                scene.remove(bullets[iBull]);
+                                score += 100;
+                                document.getElementById("score").innerHTML = "Score: " + score;
+                                playSound("TIE-fighterExplode", false, false);
                                 // asteroid destroyed and removed
                                 scene.remove(asteroids[iAst]);
+                                asteroids.splice(iAst, 1);
+                                continue;
+                                // target hit - remove the bullet
+                                scene.remove(bullets[iBull]);
                                 bullets[iBull].alive = false;
                             }
                         }
@@ -509,8 +514,8 @@ function update() {
                     boss.model.position.x = 6 * Math.cos(bossHorizontalMovement += 0.025);
                     if (health > 0)
                         boss.model.position.y = spaceShip.position.y;
-                    leftWing.rotation.z = spaceShip.position.y * 0.2;
-                    rightWing.rotation.z = spaceShip.position.y * 0.2;
+                        leftWing.rotation.z = spaceShip.position.y * 0.2;
+                        rightWing.rotation.z = spaceShip.position.y * 0.2;
 
 
                     for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
@@ -580,6 +585,7 @@ function update() {
                     if (asteroids[iAst].position.z > 50) {
                         asteroids[iAst].position.z = -7000;
                         asteroids[iAst].position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
+                        asteroids[iAst].position.y = ((Math.random() + Math.random())/ 2) * 1000 - 500;
                     }
 
                     if (!godMode) {
@@ -618,7 +624,7 @@ function update() {
 
                 // loop through each asteroids
                 for (iAst = 0; iAst < asteroids.length; iAst++) {
-                    // computation of the Euclidian distance for the bullet detection
+                    // computation of the Euclidean distance for the bullet detection
                     if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
                         //update score
                         score += 100;
