@@ -94,7 +94,7 @@ function reloadGame() {
     victory = false;
     setTimeout(function () {
         stopAnimation = false
-    }, 5000);
+    }, 8000);
     battleAlarm = false;
     soundEffectExplosion = false;
 
@@ -286,11 +286,12 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
         // move the stars too close to the camera
-        if (sphere.position.z < 0 && sphere.position.z > -200) {
-            sphere.position.z = sphere.position.z -= 200;
+        if (sphere.position.z < 0 && sphere.position.z > -200 && sphere.position.x > -80 && sphere.position.x < 80 ) {
+            sphere.position.z = sphere.position.z + 210;
+            sphere.position.x = sphere.position.z + 85 * Math.sign(sphere.position.x);
         }
-        if (sphere.position.z >= 0 && sphere.position.z < 200) {
-            sphere.position.z = sphere.position.z += 200;
+        if (sphere.position.z >= 0 && sphere.position.z < 200 && sphere.position.x > -80 && sphere.position.x < 80) {
+            sphere.position.z = sphere.position.z + 200;
         }
         //add the sphere to the scene
         scene.add(sphere);
@@ -595,8 +596,8 @@ function update() {
             // go through bullets array and update position - remove bullets when appropriate
             for (var iBull = 0; iBull < bullets.length; iBull += 1) {
 
-                // if the bullets position on z axis < -70 ill remove it
-                if (bullets[iBull].position.z < -70) {
+                // if the bullets position on z axis < -90 ill remove it
+                if (bullets[iBull].position.z < -90) {
                     scene.remove(bullets[iBull]);
                     bullets[iBull].alive = false;
                 }
@@ -675,16 +676,24 @@ function update() {
         if (gameOver === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
-            }, 5000);
+            }, 8000);
             for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
                 scene.remove(bulletsB[iBBull]);
             }
 
-            spaceShip.rotation.y += 0.03;
-            spaceShip.rotation.x += 0.01;
-            spaceShip.position.y -= 0.2;
-            spaceShip.position.z -= 0.22;
-            spaceShip.position.x += 0.2;
+            //old death animation
+            // spaceShip.rotation.y += 0.2;
+            // spaceShip.position.y -= 0.05;
+            // spaceShip.position.z -= 0.2;
+            // spaceShip.position.x += 0.1;
+
+            //new death animation
+            spaceShip.rotation.y -= 0.12 * Math.sign(spaceShip.position.x);
+            spaceShip.rotation.x -= 0.005 * Math.sign(spaceShip.position.x);
+            //spaceShip.rotation.x += 0.05;
+            spaceShip.position.y -= 0.12;
+            spaceShip.position.z -= 0.2;
+            spaceShip.position.x += spaceShip.position.x * 0.02;
             if (soundEffectExplosion === false) {
                 switch (typeSpaceShip) {
                     case 0:
@@ -723,10 +732,10 @@ function update() {
             //new animation
 
             boss.model.position.z += 0.1;
-            boss.model.position.x += 0.12;
+            boss.model.position.x += 0.12 * Math.sign(boss.model.position.x);;
             boss.model.position.y -= 0.18;
             boss.model.rotation.x += 0.01;
-            boss.model.rotation.y -= 0.02;
+            boss.model.rotation.y -= 0.02 * Math.sign(boss.model.position.x);
 
             baseCannon.position.y += 0.03;
             //
