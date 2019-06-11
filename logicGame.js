@@ -94,7 +94,7 @@ function reloadGame() {
     victory = false;
     setTimeout(function () {
         stopAnimation = false
-    }, 3000);
+    }, 5000);
     battleAlarm = false;
     soundEffectExplosion = false;
 
@@ -111,6 +111,7 @@ function reloadGame() {
 
     boss.model.position.z = -10000;
     boss.model.rotation.set(0,0,0);
+    head.position.set(0,0,0);
     leftWing.position.set(0,0,0);
     rightWing.position.set(0,0,0);
     baseCannon.position.set(0,0,0);
@@ -455,6 +456,8 @@ function update() {
             }
 
             // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
+
+            // ========================AFTER THE METEORITES SCORE!!========================
             if (score >= lvl * 1500) {
                 //loop through each asteroids
                 if (asteroids.length !== 0) {
@@ -472,14 +475,9 @@ function update() {
                         }
                         for (var iBull = 0; iBull < bullets.length; iBull += 1) {
                             if (asteroids[iAst].position.distanceTo(bullets[iBull].position) <= (0.06 + radiusAsteroids + 2)) {
-                                //update score
-                                score += 100;
-                                document.getElementById("score").innerHTML = "Score: " + score;
-                                playSound("TIE-fighterExplode", false, false);
-
                                 // target hit - remove the bullet
                                 scene.remove(bullets[iBull]);
-                                // place the asteroids in the init position
+                                // asteroid destroyed and removed
                                 scene.remove(asteroids[iAst]);
                                 bullets[iBull].alive = false;
                             }
@@ -568,7 +566,7 @@ function update() {
                         bulletsB.push(bulletb);
                     }
                 }
-                // normal management of asteroids
+            // ==================BEFORE REACHING THE BOSS!!==========================
             } else {
                 // loop through each asteroids
                 for (var iAst = 0; iAst < asteroids.length; iAst++) {
@@ -677,12 +675,16 @@ function update() {
         if (gameOver === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
-            }, 3000);
+            }, 5000);
+            for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
+                scene.remove(bulletsB[iBBull]);
+            }
 
-            spaceShip.rotation.y += 0.2;
-            spaceShip.position.y -= 0.05;
-            spaceShip.position.z -= 0.2;
-            spaceShip.position.x += 0.1;
+            spaceShip.rotation.y += 0.03;
+            spaceShip.rotation.x += 0.01;
+            spaceShip.position.y -= 0.2;
+            spaceShip.position.z -= 0.22;
+            spaceShip.position.x += 0.2;
             if (soundEffectExplosion === false) {
                 switch (typeSpaceShip) {
                     case 0:
@@ -700,21 +702,38 @@ function update() {
         if (victory === true && stopAnimation === false) {
             setTimeout(function () {
                 stopAnimation = true
-            }, 3000);
+            }, 5000);
 
-            //boss death animation
-            boss.model.rotation.y += 0.1;
+            //old animation
+
+            // boss death animation
+            // boss.model.rotation.y += 0.1;
+            // boss.model.position.z += 0.1;
+            // boss.model.position.x += 0.05;
+            // boss.model.position.y -= 0.07;
+            // baseCannon.position.x -= 0.01;
+            // baseCannon.rotation.x -= 0.03;
+            // leftWing.position.z += 0.03;
+            // leftWing.rotation.x += 0.05;
+            // leftWing.rotation.z += 0.05;
+            // rightWing.position.z -= 0.05;
+            // rightWing.rotation.y += 0.08;
+            // rightWing.rotation.z += 0.05;
+
+            //new animation
+
             boss.model.position.z += 0.1;
-            boss.model.position.x += 0.05;
-            boss.model.position.y -= 0.07;
-            baseCannon.position.x -= 0.01;
-            baseCannon.rotation.x -= 0.03;
-            leftWing.position.z += 0.03;
-            leftWing.rotation.x += 0.05;
-            leftWing.rotation.z += 0.05;
-            rightWing.position.z -= 0.05;
-            rightWing.rotation.y += 0.08;
-            rightWing.rotation.z += 0.05;
+            boss.model.position.x += 0.12;
+            boss.model.position.y -= 0.18;
+            boss.model.rotation.x += 0.01;
+            boss.model.rotation.y -= 0.02;
+
+            baseCannon.position.y += 0.03;
+            //
+            leftWing.position.x -= 0.03;
+            leftWing.rotation.x += 0.01;
+            //
+            rightWing.position.y += 0.05;
 
             //spaceship victory animation
             spaceShip.position.z -= Math.exp(-spaceShip.position.z * 0.0002);
