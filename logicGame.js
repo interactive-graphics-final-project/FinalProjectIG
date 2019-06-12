@@ -1,6 +1,3 @@
-// loader
-// create an AudioListener and add it to the camera
-var listener = new THREE.AudioListener();
 
 var shooting = false;
 var godMode = false;
@@ -17,7 +14,7 @@ var asteroids = [], radiusAsteroids = 60;
 var bullets = [], bulletsB = [], shoot = true;
 // sounds array
 var sounds = [], soundEffectExplosion = false, battleAlarm = false;
-
+var bossHorizontalMovement = 0;
 
 //flag bullet swapping dx and sx
 var sx = true;
@@ -30,12 +27,26 @@ var score = 0, health = 100, healthBoss = 100, lvl = 1;
 // textureLoader variable
 var textureLoader = new THREE.TextureLoader();
 var objectLoader = new THREE.ObjectLoader();
+var listener = new THREE.AudioListener();
 
+//creation of the scene
+scene = new THREE.Scene();
+//renderer
+renderer = new THREE.WebGLRenderer({antialias: true});
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('Container').appendChild(renderer.domElement);
+
+// creation of the camera
+camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
+
+// controls command in the main menu
+controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+//=========================== BUTTON FUNCTIONS ================================
 function startGame() {
     // !!important
     start = true;
-    pause = false;
-    gameOver = false;
 
     // reset boss position
     boss.model.rotation.z = -Math.PI / 2;
@@ -92,6 +103,8 @@ function reloadGame() {
     start = false;
     gameOver = false;
     victory = false;
+    godMode = false;
+
     setTimeout(function () {
         stopAnimation = false
     }, 8000);
@@ -146,16 +159,6 @@ function reloadGame() {
         elem[i].style.textDecoration = "none";
     document.getElementById("0").style.textDecoration = "underline";
     // ==========================
-
-    /*camera = null; controls= null; scene= null; renderer= null;
-    stars = null; asteroids = null;
-    bullets = null; bulletsB = null; shoot = null;
-    sounds = null; soundEffectExplosion = null; battleAlarm = null;
-    textureLoader = null; objectLoader = null; listener= null;
-
-    hideHtml('Container', true);
-    showHtml('modal', true);
-    window.location.reload(true)*/
 }
 
 function switchShip(type) {
@@ -185,19 +188,7 @@ function switchLvl(level) {
     lvl = level;
 }
 
-//=============================================================================
-
-scene = new THREE.Scene();
-
-//renderer
-renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('Container').appendChild(renderer.domElement);
-
-//camera
-camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 9000);
-// event listener
+//============================ EVENT LISTENER =================================
 window.addEventListener('resize', function () {
     renderer.setSize(width, height);
     camera.aspect = width / height;
@@ -263,11 +254,8 @@ document.addEventListener('mousedown', function (event) {
         event.preventDefault();
     }
 }, false);
-//===================================================================================================
 
-// controls command in the main menu
-controls = new THREE.OrbitControls(camera, renderer.domElement);
-
+//====================== FUNCTION FOR SCENOGRAPHY CREATION ======================
 function starForge() {
     // The loop will move from z position of -1000 to z position 1000, adding a random particle at each position.
     for (var z = 0; z < 1000; z += 1) {
@@ -326,11 +314,6 @@ function asteroidForge() {
     }
 }
 
-// calling the method for the creation of stars anc asteroid
-starForge();
-asteroidForge();
-
-//model textureLoader
 function loadModel(name, typeSShip) {
     // BEGIN Clara.io JSON textureLoader code
     objectLoader.load("./models/" + name + ".json", function (obj) {
@@ -363,6 +346,11 @@ function loadModel(name, typeSShip) {
     // END Clara.io JSON textureLoader code
 }
 
+//=========================== SCENOGRAPHY CREATION ===============================
+// calling the method for the creation of stars anc asteroid
+starForge();
+asteroidForge();
+
 loadModel("star-wars-vader-tie-fighter", typeSpaceShip);
 
 // planet creation
@@ -385,7 +373,7 @@ textureLoader.load('./models/texture/earth.jpg', function (texture) {
     earth.position.set(-1700, -90, -2183);
     scene.add(earth);
 });
-// =================================================================================================
+
 
 // creation of the boss ( hierarchical model )
 var boss = new SpaceShipBossModel("boss");
@@ -395,7 +383,7 @@ boss.model.position.z = -10000;
 boss.model.position.y = -1;
 scene.add(boss.model);
 
-// lights
+// =================================== LIGHTS ======================================
 var light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -403,7 +391,6 @@ scene.add(directionalLight);
 
 // init camera position
 camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
-var bossHorizontalMovement = 0;
 
 //game Logic
 function update() {
@@ -444,7 +431,7 @@ function update() {
                 }
             }
 
-            // =============================== MANAGEMENT OF BOSS bullets + movement ==========================
+            // ===================== MANAGEMENT OF BOSS bullets + movement ==========================
 
             // ========================AFTER THE METEORITES SCORE!!========================
             if (score >= lvl * 1500) {
@@ -765,6 +752,7 @@ function playSound(name, loop, positional) {
         sound.setBuffer(buffer);
         sound.setLoop(loop);
         sound.setRefDistance(20);
+        sound.setVolume(0.5);
         sound.play();
 
     });

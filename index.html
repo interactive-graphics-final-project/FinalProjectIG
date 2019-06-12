@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
-    <title>The war of the meteorites</title>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <title>The War of the Meteorites</title>
+    <link rel="shortcut icon" href="#">
+    <link href="./css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body id="body" style="background-color: black;">
 <div id="modal">
@@ -14,21 +15,21 @@
 </div>
 
 <div id='Container'>
-        <h3 id="titlePlayerHealth">health:</h3>
-        <div id="playerHealth">
-            <div id="valueHealthPlayer">
-            </div>
+    <h3 id="titlePlayerHealth">health:</h3>
+    <div id="playerHealth">
+        <div id="valueHealthPlayer">
         </div>
+    </div>
 
-        <h3 id="titleBossHealth">boss health:</h3>
-        <div id="bossHealth">
-            <div id="valueHealthBoss">
-            </div>
+    <h3 id="titleBossHealth">boss health:</h3>
+    <div id="bossHealth">
+        <div id="valueHealthBoss">
         </div>
+    </div>
 
-        <div id="score">
-            Score: 0
-        </div>
+    <div id="score">
+        Score: 0
+    </div>
 
     <div id="victory">
         <div class="title">
@@ -90,7 +91,6 @@
                 onmouseover="this.style.cursor='pointer';">Play game</h1>
         </div>
 
-
         <!-- Help Button -->
         <button type="button" class="btn btn-danger btn-circle"
                 onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?
@@ -116,7 +116,7 @@
                     <br>if you get hit you lose health, so be careful.<br>
                     <br>Destroy the meteorites to gain points and if you get enough points a new threat will
                     appear...<br>
-                    <br>Good luck!
+                    <br>Good luck and <u>Join the dark side of the force</u>
                 </div>
             </div>
             <button type="button" class="btn btn-danger btn-circle closeButton"
