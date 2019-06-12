@@ -23,7 +23,7 @@ var SpaceShipBossModel = function (inName) {
     return this;
 };
 
-SpaceShipBossModel.texture = new THREE.ImageUtils.loadTexture('./models/texture/t3.jpg');
+SpaceShipBossModel.texture = new THREE.ImageUtils.loadTexture('./texture/t3.jpg');
 SpaceShipBossModel.materials = new THREE.MeshPhongMaterial({
     map: SpaceShipBossModel.texture,
     bumpMap: SpaceShipBossModel.texture,

@@ -295,7 +295,7 @@ function asteroidForge() {
     var zPosition = -7000;
     for (var z = -7000; z < -500; z += 30) {
         // Make a sphere (exactly the same as before).
-        textureLoader.load('./models/texture/asteroid.png', function (texture) {
+        textureLoader.load('./texture/asteroid.png', function (texture) {
             var geometry = new THREE.SphereBufferGeometry(radiusAsteroids, Math.random() * 4 + 3, Math.random() * 6 + 5); // 3 32
             var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.1});
             var asteroid = new THREE.Mesh(geometry, material);
@@ -354,7 +354,7 @@ asteroidForge();
 loadModel("star-wars-vader-tie-fighter", typeSpaceShip);
 
 // planet creation
-textureLoader.load('./models/texture/sun.jpg', function (texture) {
+textureLoader.load('./texture/sun.jpg', function (texture) {
     var geometry = new THREE.SphereBufferGeometry(340, 32, 32);
     var material = new THREE.MeshBasicMaterial({map: texture});
     var sphere = new THREE.Mesh(geometry, material);
@@ -365,7 +365,7 @@ textureLoader.load('./models/texture/sun.jpg', function (texture) {
     light1.add(sphere);
     scene.add(light1);
 });
-textureLoader.load('./models/texture/earth.jpg', function (texture) {
+textureLoader.load('./texture/earth.jpg', function (texture) {
     var geometry = new THREE.SphereBufferGeometry(240, 32, 32);
     var material = new THREE.MeshPhongMaterial({map: texture, reflectivity: 0.2});
     var earth = new THREE.Mesh(geometry, material);
