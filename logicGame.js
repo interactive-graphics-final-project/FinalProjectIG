@@ -765,8 +765,6 @@ function playSound(name, loop, positional) {
         sound.setBuffer(buffer);
         sound.setLoop(loop);
         sound.setRefDistance(20);
-        if (name === "TIE-fighterExplode" || "TIE-fighterFire")
-            sound.setVolume(0.4);
         sound.play();
 
     });
