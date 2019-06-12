@@ -110,17 +110,17 @@ function reloadGame() {
     // reset boss position
 
     boss.model.position.z = -10000;
-    boss.model.rotation.set(0,0,0);
-    head.position.set(0,0,0);
-    leftWing.position.set(0,0,0);
-    rightWing.position.set(0,0,0);
-    baseCannon.position.set(0,0,0);
-    leftWing.rotation.set(0,0,0);
-    rightWing.rotation.set(0,0,0);
+    boss.model.rotation.set(0, 0, 0);
+    head.position.set(0, 0, 0);
+    leftWing.position.set(0, 0, 0);
+    rightWing.position.set(0, 0, 0);
+    baseCannon.position.set(0, 0, 0);
+    leftWing.rotation.set(0, 0, 0);
+    rightWing.rotation.set(0, 0, 0);
 
-   /* scene.remove(boss);
-    boss = new SpaceShipBossModel("boss");
-    scene.add(boss);*/
+    /* scene.remove(boss);
+     boss = new SpaceShipBossModel("boss");
+     scene.add(boss);*/
 
     // enable auto rotation and drag control
     controls.enabled = true;
@@ -168,11 +168,8 @@ function switchShip(type) {
 
     scene.remove(spaceShip);
     if (type === 0) {
-
+        camera.position.z = -5;
         loadModel("star-wars-vader-tie-fighter", type);
-    }
-    if (type === 1) {
-        //loadModel("x-wing");
     }
     if (type === 2) {
         camera.position.z = -17;
@@ -231,7 +228,6 @@ document.addEventListener("keydown", function (event) {
                 hideHtml("secondMenu", true);
                 playAllSounds()
             }
-
         }
     }
 }, false);
@@ -286,7 +282,7 @@ function starForge() {
         // scale it up a bit
         sphere.scale.x = sphere.scale.y = 2;
         // move the stars too close to the camera
-        if (sphere.position.z < 0 && sphere.position.z > -200 && sphere.position.x > -80 && sphere.position.x < 80 ) {
+        if (sphere.position.z < 0 && sphere.position.z > -200 && sphere.position.x > -80 && sphere.position.x < 80) {
             sphere.position.z = sphere.position.z + 210;
             sphere.position.x = sphere.position.z + 85 * Math.sign(sphere.position.x);
         }
@@ -297,7 +293,6 @@ function starForge() {
         scene.add(sphere);
         //finally push it to the stars array
         stars.push(sphere);
-
     }
 }
 
@@ -318,8 +313,8 @@ function asteroidForge() {
             var asteroid = new THREE.Mesh(geometry, material);
 
             // This time we give the sphere random x and y positions between -1000 and 1000
-            asteroid.position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
-            asteroid.position.y = ((Math.random() + Math.random())/ 2) * 1000 - 500;
+            asteroid.position.x = ((Math.random() + Math.random()) / 2) * 2000 - 1000;
+            asteroid.position.y = ((Math.random() + Math.random()) / 2) * 1000 - 500;
             // Then set the z position to where it is in the loop (distance of camera)
             asteroid.position.z = zPosition;
             //add the sphere to the scene
@@ -409,13 +404,6 @@ scene.add(directionalLight);
 // init camera position
 camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
 var bossHorizontalMovement = 0;
-
-console.log(leftWing.position)
-console.log(leftWing.rotation)
-console.log(rightWing.position)
-console.log(rightWing.rotation)
-console.log(baseCannon.rotation)
-
 
 //game Logic
 function update() {
@@ -514,8 +502,8 @@ function update() {
                     boss.model.position.x = 6 * Math.cos(bossHorizontalMovement += 0.025);
                     if (health > 0)
                         boss.model.position.y = spaceShip.position.y;
-                        leftWing.rotation.z = spaceShip.position.y * 0.2;
-                        rightWing.rotation.z = spaceShip.position.y * 0.2;
+                    leftWing.rotation.z = spaceShip.position.y * 0.2;
+                    rightWing.rotation.z = spaceShip.position.y * 0.2;
 
 
                     for (var iBBull = 0; iBBull < bulletsB.length; iBBull += 1) {
@@ -572,7 +560,7 @@ function update() {
                         bulletsB.push(bulletb);
                     }
                 }
-            // ==================BEFORE REACHING THE BOSS!!==========================
+                // ==================BEFORE REACHING THE BOSS!!==========================
             } else {
                 // loop through each asteroids
                 for (var iAst = 0; iAst < asteroids.length; iAst++) {
@@ -584,8 +572,8 @@ function update() {
                     // if the particle is too close move it to the back
                     if (asteroids[iAst].position.z > 50) {
                         asteroids[iAst].position.z = -7000;
-                        asteroids[iAst].position.x = ((Math.random() + Math.random())/ 2) * 2000 - 1000;
-                        asteroids[iAst].position.y = ((Math.random() + Math.random())/ 2) * 1000 - 500;
+                        asteroids[iAst].position.x = ((Math.random() + Math.random()) / 2) * 2000 - 1000;
+                        asteroids[iAst].position.y = ((Math.random() + Math.random()) / 2) * 1000 - 500;
                     }
 
                     if (!godMode) {
@@ -687,13 +675,7 @@ function update() {
                 scene.remove(bulletsB[iBBull]);
             }
 
-            //old death animation
-            // spaceShip.rotation.y += 0.2;
-            // spaceShip.position.y -= 0.05;
-            // spaceShip.position.z -= 0.2;
-            // spaceShip.position.x += 0.1;
-
-            //new death animation
+            //death animation
             spaceShip.rotation.y -= 0.12 * Math.sign(spaceShip.position.x);
             spaceShip.rotation.x -= 0.005 * Math.sign(spaceShip.position.x);
             //spaceShip.rotation.x += 0.05;
@@ -719,35 +701,18 @@ function update() {
                 stopAnimation = true
             }, 5000);
 
-            //old animation
-
-            // boss death animation
-            // boss.model.rotation.y += 0.1;
-            // boss.model.position.z += 0.1;
-            // boss.model.position.x += 0.05;
-            // boss.model.position.y -= 0.07;
-            // baseCannon.position.x -= 0.01;
-            // baseCannon.rotation.x -= 0.03;
-            // leftWing.position.z += 0.03;
-            // leftWing.rotation.x += 0.05;
-            // leftWing.rotation.z += 0.05;
-            // rightWing.position.z -= 0.05;
-            // rightWing.rotation.y += 0.08;
-            // rightWing.rotation.z += 0.05;
-
-            //new animation
-
+            //animation
             boss.model.position.z += 0.1;
-            boss.model.position.x += 0.12 * Math.sign(boss.model.position.x);;
+            boss.model.position.x += 0.12 * Math.sign(boss.model.position.x);
+            ;
             boss.model.position.y -= 0.18;
             boss.model.rotation.x += 0.01;
             boss.model.rotation.y -= 0.02 * Math.sign(boss.model.position.x);
 
             baseCannon.position.y += 0.03;
-            //
+
             leftWing.position.x -= 0.03;
             leftWing.rotation.x += 0.01;
-            //
             rightWing.position.y += 0.05;
 
             //spaceship victory animation
