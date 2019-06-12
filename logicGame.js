@@ -316,7 +316,7 @@ function asteroidForge() {
 
 function loadModel(name, typeSShip) {
     // BEGIN Clara.io JSON textureLoader code
-    objectLoader.load("./models/" + name + ".json", function (obj) {
+    objectLoader.load("./model/" + name + ".json", function (obj) {
             scene.add(obj);
             typeSpaceShip = typeSShip;
             spaceShip = obj;

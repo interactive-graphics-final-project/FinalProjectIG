@@ -10,10 +10,8 @@
 body {
     font-family: 'star_jedi_outlineregular', Arial, sans-serif;
     color: #ECC760;
-
     /* prevent white margin */
     margin: 0;
-
     /* hide scrollbars */
     overflow: hidden;
 }
