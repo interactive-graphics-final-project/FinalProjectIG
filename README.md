@@ -12,7 +12,11 @@ The game was built using the ThreeJS library.
 
 “The War of the Meteorites” uses many different elements to realise a simple game that includes all the requirements of the assignment and more.
 We tried to achieve the best possible result by combining the techniques learned during the course while also managing the limited resources available in a web environment.
-The mechanics of the game are compelling enough to create a playable and enjoyable overall experience and building it provided us with precious insight to deal with interactive graphics projects for the future.
+The mechanics of the game are compelling enough to create an enjoyable experience overall, and building it provided us with precious insight to deal with interactive graphics projects for the future.
+
+
+Find in-depth details in the PDF documentation file!
+
 
 ![phase 1](https://github.com/interactive-graphics-final-project/FinalProjectIG/blob/master/images/2019-06-10%20(13).png)
 
