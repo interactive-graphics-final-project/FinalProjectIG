@@ -115,6 +115,11 @@ function reloadGame() {
     health = 100;
     healthBoss = 100;
     score = 0;
+
+    //remove bullets
+    for (var iBBull = 0; iBBull < bullets.length; iBBull += 1) {
+        scene.remove(bullets[iBBull]);
+    }
     // reload default spaceship
     scene.remove(spaceShip);
     loadModel("star-wars-vader-tie-fighter", 0);
