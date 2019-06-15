@@ -7,6 +7,8 @@ Alessandro Giannetti - Edoardo Bini - Marco Ferraro
 
 [Click here for GitHub Pages](https://interactive-graphics-final-project.github.io/FinalProjectIG/)
 
+Please load using Mozilla Firefox!
+
 ## Introduction
 “The war of the meteorites” is a game set in the Star Wars universe, in which the player impersonates a pilot struggling to survive a wave of asteroids flying on a spaceship through empty space.
 The player controls the spaceship with the mouse and can left click to shoot and destroy incoming meteorites to avoid taking damage. If the player survives the wave of meteorites, a new threat is presented: an enemy spacecraft will appear on the screen attacking the player with lasers and the objective becomes to destroy the enemy.
