@@ -104,6 +104,7 @@ function reloadGame() {
     gameOver = false;
     victory = false;
     godMode = false;
+    modelLoaded = false;
 
     setTimeout(function () {
         stopAnimation = false
@@ -167,16 +168,18 @@ function reloadGame() {
 }
 
 function switchShip(type) {
-    if(type !== typeSpaceShip) {
+    if(modelLoaded === true && type !== typeSpaceShip) {
+
+        //remove previous spaceship
+        modelLoaded = false;
+        scene.remove(spaceShip);
+
         // button spaceShip underline
         var elem = document.getElementsByClassName("ship");
         for (var i = 0; i < elem.length; i++)
             elem[i].style.textDecoration = "none";
         document.getElementById(type).style.textDecoration = "underline";
         // ==========================
-
-        scene.remove(spaceShip);
-
         if (type === 0) {
             camera.position.z = -5;
             loadModel("star-wars-vader-tie-fighter", type);
@@ -323,11 +326,8 @@ function asteroidForge() {
 }
 
 function loadModel(name, typeSShip) {
-    modelLoaded = false;
-
-    // BEGIN Clara.io JSON textureLoader code
+    typeSpaceShip = typeSShip;
     objectLoader.load('./spaceships/' + name + '.json', function (obj) {
-            typeSpaceShip = typeSShip;
             spaceShip = obj;
             scene.add(obj);
             if (modelLoaded) {
@@ -361,7 +361,7 @@ function loadModel(name, typeSShip) {
 starForge();
 asteroidForge();
 
-loadModel("star-wars-vader-tie-fighter", typeSpaceShip);
+loadModel("star-wars-vader-tie-fighter", 0);
 
 // planet creation
 textureLoader.load('./texture/sun.jpg', function (texture) {
