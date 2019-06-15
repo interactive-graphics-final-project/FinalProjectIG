@@ -90,39 +90,38 @@
             <h1 class="clickable" onclick="startGame()" onmouseout="this.style.cursor='default';"
                 onmouseover="this.style.cursor='pointer';">Play game</h1>
         </div>
+    </div>
+    <!-- Help Button -->
+    <button type="button" class="btn btn-danger btn-circle"
+            onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?
+    </button>
 
-        <!-- Help Button -->
-        <button type="button" class="btn btn-danger btn-circle"
-                onclick="showHtml('instructions', false); playSound('grumbling',false,false)">?
-        </button>
-
-        <div id="instructions" style="background-color: black; border:2px solid #ECC760; height: 95%">
-            <div style="padding: 30px; ;">
-                <h1 class="text-center">instructions</h1>
-                <h3 class="text-center"><u style="color: red;">Please, load this game on firefox</u></h3>
-                <h3>Commands</h3>
-                <div style="font-size: 19px;">
-                    <ul>
-                        <li><b>Left Click</b> : Shoot</li>
-                        <li><b>Mouse Position</b> : movement spaceship</li>
-                        <li><b>T</b> : turbo</li>
-                        <li><b>g</b> : god mode</li>
-                        <li><b>Esc</b> : pause</li>
-                    </ul>
-                </div>
-                <h3>how play</h3>
-                <div class="text-center" style="font-size: 21px;">
-                    <br>Survive the wave of meteorites!<br>
-                    <br>if you get hit you lose health, so be careful.<br>
-                    <br>Destroy the meteorites to gain points and if you get enough points a new threat will
-                    appear...<br>
-                    <br>Good luck and <u>Join the dark side of the force</u>
-                </div>
+    <div id="instructions" style="background-color: black; border:2px solid #ECC760; height: 95%">
+        <div style="padding: 30px; ;">
+            <h1 class="text-center">instructions</h1>
+            <h3 class="text-center"><u style="color: red;">Please, load this game on firefox</u></h3>
+            <h3>Commands</h3>
+            <div style="font-size: 19px;">
+                <ul>
+                    <li><b>Left Click</b> : Shoot</li>
+                    <li><b>Mouse Position</b> : movement spaceship</li>
+                    <li><b>T</b> : turbo</li>
+                    <li><b>g</b> : god mode</li>
+                    <li><b>Esc</b> : pause</li>
+                </ul>
             </div>
-            <button type="button" class="btn btn-danger btn-circle closeButton"
-                    onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
-            </button>
+            <h3>how play</h3>
+            <div class="text-center" style="font-size: 21px;">
+                <br>Survive the wave of meteorites!<br>
+                <br>if you get hit you lose health, so be careful.<br>
+                <br>Destroy the meteorites to gain points and if you get enough points a new threat will
+                appear...<br>
+                <br>Good luck and <u>Join the dark side of the force</u>
+            </div>
         </div>
+        <button type="button" class="btn btn-danger btn-circle closeButton"
+                onclick="hideHtml('instructions', false);  playSound('happy',false,false)">?
+        </button>
     </div>
 </div>
 

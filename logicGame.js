@@ -99,23 +99,27 @@ function startGame() {
 }
 
 function reloadGame() {
+    health = 100;
+    healthBoss = 100;
+    score = 0;
+
     pause = false;
     start = false;
     gameOver = false;
     victory = false;
     godMode = false;
     modelLoaded = false;
-
     setTimeout(function () {
-        stopAnimation = false
+        stopAnimation = false;
     }, 8000);
     battleAlarm = false;
     soundEffectExplosion = false;
 
-    // init variable
-    health = 100;
-    healthBoss = 100;
-    score = 0;
+    // enable auto rotation and drag control
+    controls.enabled = true;
+
+    camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
+
 
     //remove bullets
     for (var iBBull = 0; iBBull < bullets.length; iBBull += 1) {
@@ -124,10 +128,8 @@ function reloadGame() {
     // reload default spaceship
     scene.remove(spaceShip);
     loadModel("star-wars-vader-tie-fighter", 0);
-    camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
 
     // reset boss position
-
     boss.model.position.z = -10000;
     boss.model.rotation.set(0, 0, 0);
     head.position.set(0, 0, 0);
@@ -136,13 +138,6 @@ function reloadGame() {
     baseCannon.position.set(0, 0, 0);
     leftWing.rotation.set(0, 0, 0);
     rightWing.rotation.set(0, 0, 0);
-
-    /* scene.remove(boss);
-     boss = new SpaceShipBossModel("boss");
-     scene.add(boss);*/
-
-    // enable auto rotation and drag control
-    controls.enabled = true;
 
     // hide others menu
     hideHtml("secondMenu", false);
@@ -154,10 +149,10 @@ function reloadGame() {
     hideHtml("titleBossHealth", false);
     hideHtml("bossHealth", false);
     hideHtml("score", false);
-
-    asteroidForge();
     // show main menu
     showHtml("mainMenu", true);
+
+
 
     // button spaceShip underline
     var elem = document.getElementsByClassName("ship");
@@ -165,6 +160,8 @@ function reloadGame() {
         elem[i].style.textDecoration = "none";
     document.getElementById("0").style.textDecoration = "underline";
     // ==========================
+
+    asteroidForge();
 }
 
 function switchShip(type) {
@@ -357,6 +354,9 @@ function loadModel(name, typeSShip) {
 }
 
 //=========================== SCENOGRAPHY CREATION ===============================
+// init camera position
+camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
+
 // calling the method for the creation of stars anc asteroid
 starForge();
 asteroidForge();
@@ -399,8 +399,7 @@ scene.add(light);
 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 scene.add(directionalLight);
 
-// init camera position
-camera.position.set(-2.2064477886077065, 0.0643751199694916, -4.4863620005609235);
+
 
 //game Logic
 function update() {
