@@ -162,21 +162,24 @@ function reloadGame() {
 }
 
 function switchShip(type) {
-    // button spaceShip underline
-    var elem = document.getElementsByClassName("ship");
-    for (var i = 0; i < elem.length; i++)
-        elem[i].style.textDecoration = "none";
-    document.getElementById(type).style.textDecoration = "underline";
-    // ==========================
+    if(type !== typeSpaceShip) {
+        // button spaceShip underline
+        var elem = document.getElementsByClassName("ship");
+        for (var i = 0; i < elem.length; i++)
+            elem[i].style.textDecoration = "none";
+        document.getElementById(type).style.textDecoration = "underline";
+        // ==========================
 
-    scene.remove(spaceShip);
-    if (type === 0) {
-        camera.position.z = -5;
-        loadModel("star-wars-vader-tie-fighter", type);
-    }
-    if (type === 2) {
-        camera.position.z = -17;
-        loadModel("star-wars-arc-170-pbr", type);
+        scene.remove(spaceShip);
+
+        if (type === 0) {
+            camera.position.z = -5;
+            loadModel("star-wars-vader-tie-fighter", type);
+        }
+        if (type === 2) {
+            camera.position.z = -17;
+            loadModel("star-wars-arc-170-pbr", type);
+        }
     }
 }
 
@@ -315,11 +318,13 @@ function asteroidForge() {
 }
 
 function loadModel(name, typeSShip) {
+    modelLoaded = false;
+
     // BEGIN Clara.io JSON textureLoader code
     objectLoader.load('./spaceships/' + name + '.json', function (obj) {
-            scene.add(obj);
             typeSpaceShip = typeSShip;
             spaceShip = obj;
+            scene.add(obj);
             if (modelLoaded) {
                 switch (typeSShip) {
                     case 0:
